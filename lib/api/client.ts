@@ -185,3 +185,62 @@ export const telegramApi = {
   link: (platformId: string) => api.post('/telegram/link', { platformId }),
   unlink: () => api.delete('/telegram/link'),
 };
+
+export interface LaneDefinition {
+  id: 'lane1' | 'lane2' | 'lane3';
+  name: string;
+  description: string;
+  targetAPY?: string;
+  estimatedAPY?: string;
+  riskLevel: string;
+  spendAccess: string;
+  spread?: number;
+  impliedAPY?: number;
+  ptDiscount?: number;
+  borrowRate?: number;
+  ytImpliedAPY?: number;
+  srNusdAPY?: number;
+  morphoUtilization?: number;
+  leverageMultiplier?: number;
+}
+
+export interface SpendBalance {
+  yieldBalance: string;
+  liquidBalance: string;
+  totalSpendable: string;
+}
+
+export interface SpendTransaction {
+  _id: string;
+  type: 'qr_pay' | 'p2p' | 'card';
+  amount: string;
+  currency: string;
+  recipient: string;
+  settlementSource: 'yield' | 'liquid' | 'mixed';
+  status: string;
+  note?: string;
+  createdAt: string;
+}
+
+export interface LanePosition {
+  lane1AllocationBps: number;
+  lane2AllocationBps: number;
+  lane3AllocationBps: number;
+  yieldBalance: string;
+  liquidBalance: string;
+}
+
+export const laneApi = {
+  getLanes: () => api.get<LaneDefinition[]>('/lanes'),
+  getMyAllocation: () => api.get<LanePosition>('/lanes/my-allocation'),
+  allocate: (body: { lane1Bps: number; lane2Bps: number; lane3Bps: number }) =>
+    api.post<LanePosition>('/lanes/allocate', body),
+  getDecisions: (lane: string) => api.get<any[]>(`/lanes/${lane}/decisions`),
+};
+
+export const spendApi = {
+  getBalance: () => api.get<SpendBalance>('/spend/balance'),
+  qrPay: (body: { recipientAddress: string; amount: string; note?: string }) =>
+    api.post<SpendTransaction>('/spend/qr-pay', body),
+  getHistory: () => api.get<SpendTransaction[]>('/spend/history'),
+};
