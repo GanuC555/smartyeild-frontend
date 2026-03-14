@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { ConnectButton } from '@onelabs/dapp-kit';
 import { useWallet } from '@/lib/wallet/wallet-context';
 import { useStore } from '@/lib/store';
 
@@ -55,6 +56,7 @@ export default function AppHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
+          <ConnectButton />
           <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 font-mono text-xs text-white/50">
             {truncateAddress(walletAddress || '')}
           </span>
