@@ -1,8 +1,9 @@
-The strategy allocation page is shown after a deposit, letting users choose how AI agents should split their strategy pool between Guardian, Balancer, and Hunter strategies.
+The lane selector appears after deposit. User chooses how to split capital across 3 lanes.
+Each lane uses Strata → Pendle → Morpho in a different configuration.
 
-- Shows each strategy's current APY, description, and approved protocols
-- Range sliders auto-rebalance other strategies to keep total at 100%
-- Preset buttons for common allocations (Full Safety, Balanced, Conservative, Max Yield)
-- Computes and shows expected blended APY in real time
-- Confirms via POST /strategies/allocate and redirects to /dashboard
-- Allocation must sum to 100% — submit button is disabled otherwise
+- Three lane cards show: name, protocol stack, target APY, risk level, spend access timing
+- Sliders allow custom allocation; all must sum to 100% (10000 bps sent to backend)
+- Three preset buttons: Conservative (60/30/10), Balanced (34/33/33), Aggressive (10/60/30)
+- Live blended APY preview updates as sliders move
+- Confirm calls POST /lanes/allocate and redirects to dashboard
+- Data from useStrategyAllocation hook (calls /lanes)
