@@ -81,7 +81,7 @@ export default function LandingNavbar() {
               ))}
               <a
                 href="/dashboard"
-                className="mt-2 flex items-center justify-center gap-2 rounded-full bg-foreground/10 px-5 py-3 text-sm font-medium text-foreground/90"
+                className=" hero-glass-button mt-2 flex items-center justify-center gap-2 rounded-full  px-5 py-3 text-sm font-medium text-foreground/90 hero-glass-button"
               >
                 <Wallet className="h-3.5 w-3.5" />
                 Launch App

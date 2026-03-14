@@ -48,33 +48,33 @@ const faqs = [
 
 export default function LandingFaqSection() {
   return (
-    <section className="relative px-4 py-24 md:py-32">
+    <section className="relative z-20 px-4 py-24 md:py-32 bg-black rounded-4xl">
       <div className="mx-auto max-w-7xl">
         <ScrollReveal>
-          <div className="mb-16 text-center">
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/5 px-4 py-2">
-              <HelpCircle className="h-3.5 w-3.5 text-foreground/60" />
-              <span className="text-xs font-medium uppercase tracking-widest text-foreground/60">
+          <div className="mb-16 text-center text-white">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2">
+              <HelpCircle className="h-3.5 w-3.5 text-white/60" />
+              <span className="text-xs font-medium uppercase tracking-widest text-white/60">
                 FAQ
               </span>
             </div>
-            <h2 className="text-4xl font-light md:text-5xl lg:text-6xl">
-              <span className="text-gradient-bright">Frequently Asked</span>{' '}
-              <span className="font-serif-italic text-gradient">Questions</span>
+            <h2 className="text-4xl font-light md:text-5xl lg:text-6xl text-white">
+              <span>Frequently Asked</span>{' '}
+              <span className="font-serif-italic">Questions</span>
             </h2>
           </div>
         </ScrollReveal>
 
         <div className="grid items-start gap-6 md:grid-cols-[1fr_1.5fr]">
           <ScrollReveal delay={0.1}>
-            <div className="glass-card-subtle p-8 text-center">
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-foreground/10">
-                <HelpCircle className="h-6 w-6 text-foreground/50" />
+            <div className="glass-card-subtle p-8 text-center border border-white/10 bg-white/5 text-white">
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-white/10">
+                <HelpCircle className="h-6 w-6 text-white/50" />
               </div>
-              <h3 className="text-lg font-medium text-foreground/90">Still Have Questions?</h3>
+              <h3 className="text-lg font-medium text-white">Still Have Questions?</h3>
               <a
                 href="#contact"
-                className="mt-6 inline-flex items-center gap-2 rounded-full border border-foreground/10 px-5 py-2.5 text-sm text-foreground/70 transition-colors hover:bg-foreground/5"
+                className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/10 px-5 py-2.5 text-sm text-white/70 transition-colors hover:bg-white/10"
               >
                 <ArrowUpRight className="h-3.5 w-3.5" />
                 Ask A Question
@@ -88,12 +88,12 @@ export default function LandingFaqSection() {
                 <AccordionItem
                   key={faq.q}
                   value={`faq-${index}`}
-                  className="glass-card-subtle rounded-xl border-none px-6"
+                  className="glass-card-subtle rounded-xl px-6 border border-white/10 bg-white/5"
                 >
-                  <AccordionTrigger className="py-5 text-sm text-foreground/80 hover:no-underline hover:text-foreground/95">
+                  <AccordionTrigger className="py-5 text-sm text-white/80 hover:no-underline hover:text-white">
                     {faq.q}
                   </AccordionTrigger>
-                  <AccordionContent className="pb-5 text-sm text-muted-foreground">
+                  <AccordionContent className="pb-5 text-sm text-white/60">
                     {faq.a}
                   </AccordionContent>
                 </AccordionItem>

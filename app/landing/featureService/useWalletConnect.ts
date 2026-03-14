@@ -16,7 +16,12 @@ export function useWalletConnect() {
   const connect = async () => {
     setLoading(true);
     try {
-      const address = await wallet.connect();
+      // wallet.connect() is a no-op with dapp-kit — get address from already-connected wallet
+      const address = wallet.getAddress();
+      if (!address) {
+        toast.error('Please connect your wallet first using the Connect button above');
+        return;
+      }
       const { nonce } = await authApi.getNonce(address);
       const signature = await wallet.signMessage(nonce);
       const { accessToken, refreshToken, user } = await authApi.verify(

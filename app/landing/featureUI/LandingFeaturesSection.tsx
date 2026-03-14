@@ -70,44 +70,46 @@ const features = [
 
 export default function LandingFeaturesSection() {
   return (
-    <section className="relative px-4 py-24 md:py-32">
-      <div className="mx-auto max-w-7xl">
-        <ScrollReveal>
-          <div className="mb-16 text-center">
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/5 px-4 py-2">
-              <Sparkles className="h-3.5 w-3.5 text-foreground/60" />
-              <span className="text-xs font-medium uppercase tracking-widest text-foreground/60">
-                Features
-              </span>
-            </div>
-            <h2 className="text-4xl font-light md:text-5xl lg:text-6xl">
-              <span className="text-gradient-bright">Yield & Spend in</span>{' '}
-              <span className="font-serif-italic text-gradient">one place</span>
-            </h2>
-          </div>
-        </ScrollReveal>
-
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
-          {features.map((feature, index) => (
-            <ScrollReveal key={feature.title} delay={index * 0.08}>
-              <div className="glass-card-subtle group h-full p-8 transition-all duration-300 hover:border-foreground/15 hover:bg-foreground/[0.03]">
-                <div className="mb-6 flex gap-2">
-                  {feature.icons.map((Icon, iconIndex) => (
-                    <div
-                      key={`${feature.title}-${iconIndex}`}
-                      className="flex h-12 w-12 items-center justify-center rounded-xl border border-foreground/5 bg-foreground/[0.03] transition-colors group-hover:border-foreground/10"
-                    >
-                      <Icon className="h-5 w-5 text-foreground/40" />
-                    </div>
-                  ))}
-                </div>
-                <h3 className="text-lg font-medium text-foreground/90">{feature.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{feature.desc}</p>
+    <div className="relative z-10">
+      <section className="sticky top-0 min-h-screen px-4 py-24 md:py-32 bg-black rounded-4xl">
+        <div className="mx-auto max-w-7xl rounded">
+          <ScrollReveal>
+            <div className="mb-16 text-center">
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2">
+                <Sparkles className="h-3.5 w-3.5 text-white/60" />
+                <span className="text-xs font-medium uppercase tracking-widest text-white/60">
+                  Features
+                </span>
               </div>
-            </ScrollReveal>
-          ))}
+              <h2 className="text-4xl font-light md:text-5xl lg:text-6xl text-white">
+                <span>Yield & Spend in</span>{' '}
+                <span className="font-serif-italic">one place</span>
+              </h2>
+            </div>
+          </ScrollReveal>
+
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+            {features.map((feature, index) => (
+              <ScrollReveal key={feature.title} delay={index * 0.08}>
+                <div className="glass-card-subtle group h-full p-8 transition-all duration-300 hover:border-white/15 hover:bg-white/[0.03]">
+                  <div className="mb-6 flex gap-2">
+                    {feature.icons.map((Icon, iconIndex) => (
+                      <div
+                        key={`${feature.title}-${iconIndex}`}
+                        className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/5 bg-white/[0.03] transition-colors group-hover:border-white/10"
+                      >
+                        <Icon className="h-5 w-5 text-white/40" />
+                      </div>
+                    ))}
+                  </div>
+                  <h3 className="text-lg font-medium text-white">{feature.title}</h3>
+                  <p className="mt-2 text-sm text-white/80">{feature.desc}</p>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }

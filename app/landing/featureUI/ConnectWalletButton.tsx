@@ -1,21 +1,33 @@
 'use client';
 
+import { ConnectButton } from '@onelabs/dapp-kit';
+import { useWallet } from '@/lib/wallet/wallet-context';
 import { useWalletConnect } from '../featureService/useWalletConnect';
+import { GlassButton } from '@/components/ui/glass-button';
 
 export default function ConnectWalletButton({
-  label = 'Connect Wallet',
+  label = 'Sign In',
 }: {
   label?: string;
 }) {
   const { loading, connect } = useWalletConnect();
+  const wallet = useWallet();
+  const isConnected = wallet.isConnected();
 
+  // Step 1: not connected → show dapp-kit ConnectButton to connect OneWallet
+  if (!isConnected) {
+    return <ConnectButton />;
+  }
+
+  // Step 2: connected → sign the nonce to authenticate with backend
   return (
-    <button
+    <GlassButton
       onClick={connect}
       disabled={loading}
-      className="cursor-pointer rounded-xl bg-teal-500 px-6 py-3 font-bold text-black transition-all hover:bg-teal-400 disabled:opacity-50"
+      className="hero-glass-button z-20"
+      contentClassName="text-white font-semibold"
     >
-      {loading ? 'Connecting...' : label}
-    </button>
+      {loading ? 'Signing in...' : label}
+    </GlassButton>
   );
 }
