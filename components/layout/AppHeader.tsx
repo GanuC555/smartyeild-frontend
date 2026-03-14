@@ -8,7 +8,8 @@ import { useStore } from '@/lib/store';
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Dashboard' },
   { href: '/vault', label: 'Vault' },
-  { href: '/strategies', label: 'Strategies' },
+  { href: '/strategies', label: 'Lanes' },
+  { href: '/spend', label: 'Spend' },
   { href: '/card', label: 'Card' },
   { href: '/history', label: 'History' },
   { href: '/settings', label: 'Settings' },
