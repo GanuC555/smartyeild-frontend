@@ -240,7 +240,7 @@ export const laneApi = {
 
 export const spendApi = {
   getBalance: () => api.get<SpendBalance>('/spend/balance'),
-  qrPay: (body: { recipientAddress: string; amount: string; note?: string }) =>
+  qrPay: (body: { recipientAddress: string; amount: string; note?: string; txDigest?: string }) =>
     api.post<SpendTransaction>('/spend/qr-pay', body),
   getHistory: () => api.get<SpendTransaction[]>('/spend/history'),
 };

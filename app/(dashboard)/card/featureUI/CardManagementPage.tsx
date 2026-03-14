@@ -6,8 +6,27 @@ import { Card } from '@/components/ui/card';
 import { useCardManagement } from '../featureService/useCardManagement';
 
 export default function CardManagementPage() {
-  const { card, issueCard, loading, toggleFreeze, transactions } =
+  const { card, cardUnavailable, issueCard, loading, toggleFreeze, transactions } =
     useCardManagement();
+
+  if (cardUnavailable) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-3xl font-bold text-white">Yield Card</h1>
+          <p className="mt-2 text-white/50">
+            Spend from accrued yield first. Principal remains protected.
+          </p>
+        </div>
+        <Card className="flex flex-col items-center justify-center py-12">
+          <p className="text-xl font-semibold text-white">Card feature coming soon</p>
+          <p className="mt-2 text-sm text-white/40">
+            The virtual card module is under development. Check back later.
+          </p>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -38,11 +57,11 @@ export default function CardManagementPage() {
         <div className="flex gap-3">
           {!card?.issued ? (
             <Button onClick={issueCard} disabled={loading}>
-              {loading ? 'Issuing…' : 'Issue virtual card'}
+              {loading ? 'Issuing...' : 'Issue virtual card'}
             </Button>
           ) : (
             <Button variant="secondary" onClick={toggleFreeze} disabled={loading}>
-              {loading ? 'Updating…' : card.frozen ? 'Unfreeze card' : 'Freeze card'}
+              {loading ? 'Updating...' : card.frozen ? 'Unfreeze card' : 'Freeze card'}
             </Button>
           )}
         </div>

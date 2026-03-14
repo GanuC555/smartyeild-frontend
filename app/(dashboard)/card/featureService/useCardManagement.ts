@@ -15,13 +15,19 @@ export function useCardManagement() {
   const statusQuery = useQuery<CardStatus>({
     queryKey: ['card-status'],
     queryFn: cardApi.status,
+    retry: false,
   });
 
   const transactionsQuery = useQuery<CardTransaction[]>({
     queryKey: ['card-transactions'],
     queryFn: cardApi.transactions,
     refetchInterval: 20_000,
+    retry: false,
   });
+
+  // Card backend module does not exist yet — surface this clearly
+  const cardUnavailable =
+    statusQuery.isError || (!statusQuery.isLoading && !statusQuery.data?.issued && !statusQuery.data);
 
   const issueCard = async () => {
     setLoading(true);
@@ -30,7 +36,7 @@ export function useCardManagement() {
       toast.success('Virtual card issued');
       await statusQuery.refetch();
     } catch {
-      toast.error('Issue endpoint unavailable. Demo mode shown.');
+      toast.error('Card feature coming soon');
     } finally {
       setLoading(false);
     }
@@ -48,7 +54,7 @@ export function useCardManagement() {
       }
       await statusQuery.refetch();
     } catch {
-      toast.error('Card toggle unavailable. Demo mode shown.');
+      toast.error('Card feature coming soon');
     } finally {
       setLoading(false);
     }
@@ -57,6 +63,7 @@ export function useCardManagement() {
   return {
     loading,
     card: statusQuery.data,
+    cardUnavailable,
     transactions: transactionsQuery.data ?? [],
     issueCard,
     toggleFreeze,

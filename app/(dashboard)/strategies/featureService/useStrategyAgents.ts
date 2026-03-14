@@ -6,6 +6,12 @@ import { toast } from 'sonner';
 import { laneApi, agentApi } from '@/lib/api/client';
 import type { LaneDefinition } from '@/lib/api/client';
 
+const LANE_TO_AGENT: Record<string, string> = {
+  lane1: 'guardian',
+  lane2: 'balancer',
+  lane3: 'hunter',
+};
+
 export function useStrategyAgents() {
   const [running, setRunning] = useState<string | null>(null);
 
@@ -34,7 +40,8 @@ export function useStrategyAgents() {
   const triggerLane = async (lane: string) => {
     setRunning(lane);
     try {
-      await agentApi.run(lane);
+      const agentId = LANE_TO_AGENT[lane] ?? lane;
+      await agentApi.run(agentId);
       toast.success(`${lane} decision cycle triggered`);
       await query.refetch();
     } catch {

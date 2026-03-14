@@ -1,9 +1,11 @@
 'use client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { spendApi } from '@/lib/api/client';
+import { useOneChainTx } from '@/lib/onechain/useOneChainTx';
 
 export function useSpend() {
   const queryClient = useQueryClient();
+  const { settlePayment } = useOneChainTx();
 
   const { data: balance, isLoading: balanceLoading } = useQuery({
     queryKey: ['spend-balance'],
@@ -17,8 +19,23 @@ export function useSpend() {
   });
 
   const qrPayMutation = useMutation({
-    mutationFn: (params: { recipientAddress: string; amount: string; note?: string }) =>
-      spendApi.qrPay(params),
+    mutationFn: async (params: {
+      recipientAddress: string;
+      amount: string;
+      note?: string;
+    }) => {
+      // First settle on-chain
+      const onChainResult = await settlePayment({
+        amountOct: BigInt(Math.round(Number(params.amount) * 1_000_000)),
+        recipientAddress: params.recipientAddress,
+      });
+
+      // Then record in backend with the real tx digest
+      return spendApi.qrPay({
+        ...params,
+        txDigest: onChainResult.digest,
+      });
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['spend-balance'] });
       queryClient.invalidateQueries({ queryKey: ['spend-history'] });
