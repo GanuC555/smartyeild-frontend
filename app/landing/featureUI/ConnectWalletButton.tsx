@@ -1,33 +1,50 @@
 'use client';
 
-import { ConnectButton } from '@onelabs/dapp-kit';
+import { useConnectWallet, useWallets } from '@onelabs/dapp-kit';
 import { useWallet } from '@/lib/wallet/wallet-context';
 import { useWalletConnect } from '../featureService/useWalletConnect';
 import { GlassButton } from '@/components/ui/glass-button';
 
 export default function ConnectWalletButton({
-  label = 'Sign In',
+  label = 'Launch App',
 }: {
   label?: string;
 }) {
   const { loading, connect } = useWalletConnect();
   const wallet = useWallet();
   const isConnected = wallet.isConnected();
+  const wallets = useWallets();
+  const { mutate: connectWallet, isPending: isConnecting } = useConnectWallet();
 
-  // Step 1: not connected → show dapp-kit ConnectButton to connect OneWallet
-  if (!isConnected) {
-    return <ConnectButton />;
-  }
+  const handleClick = () => {
+    if (!isConnected) {
+      // Trigger dapp-kit wallet connection — pick first available wallet (OneWallet)
+      const target = wallets[0];
+      if (target) {
+        connectWallet({ wallet: target });
+      }
+    } else {
+      // Wallet already connected — sign nonce and authenticate
+      connect();
+    }
+  };
 
-  // Step 2: connected → sign the nonce to authenticate with backend
+  const buttonLabel = isConnecting
+    ? 'Connecting...'
+    : loading
+      ? 'Signing in...'
+      : isConnected
+        ? 'Sign In'
+        : label;
+
   return (
     <GlassButton
-      onClick={connect}
-      disabled={loading}
+      onClick={handleClick}
+      disabled={isConnecting || loading}
       className="hero-glass-button z-20"
       contentClassName="text-white font-semibold"
     >
-      {loading ? 'Signing in...' : label}
+      {buttonLabel}
     </GlassButton>
   );
 }
