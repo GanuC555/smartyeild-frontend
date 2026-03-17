@@ -16,24 +16,47 @@ export default function YieldCounter({
   useEffect(() => {
     initRef.current = initialYield;
     startRef.current = Date.now();
-
+    setCurrent(initialYield);
+    if (perSecondRate <= 0) return;
     const id = setInterval(() => {
       const elapsed = (Date.now() - startRef.current) / 1000;
       setCurrent(initRef.current + elapsed * perSecondRate);
     }, 100);
-
     return () => clearInterval(id);
   }, [initialYield, perSecondRate]);
 
+  const formatYield = (n: number) => {
+    if (n >= 1) return n.toFixed(4);
+    if (n >= 0.0001) return n.toFixed(6);
+    return n.toFixed(8);
+  };
+
+  const formatRate = (n: number) => {
+    if (n >= 0.01) return n.toFixed(6);
+    return n.toFixed(10);
+  };
+
   return (
     <div>
-      <p className="text-3xl font-bold text-teal-400">
-        ${current.toLocaleString('en-US', {
-          minimumFractionDigits: 6,
-          maximumFractionDigits: 6,
-        })}
+      <p
+        className="text-gradient-bp text-3xl font-semibold tabular-nums"
+        style={{ fontVariantNumeric: 'tabular-nums' }}
+      >
+        ${formatYield(current)}
       </p>
-      <p className="mt-1 text-xs text-white/40">+${perSecondRate.toFixed(8)}/sec</p>
+      {perSecondRate > 0 ? (
+        <div className="mt-1.5 flex items-center gap-1.5">
+          <span
+            className="relative inline-block h-1.5 w-1.5 flex-shrink-0 rounded-full pulse-dot-pink"
+            style={{ background: 'hsl(325, 90%, 65%)' }}
+          />
+          <p className="text-[11px] text-foreground/40 tabular-nums">
+            +${formatRate(perSecondRate)}/sec
+          </p>
+        </div>
+      ) : (
+        <p className="mt-1 text-[11px] text-foreground/30">Accruing…</p>
+      )}
     </div>
   );
 }
