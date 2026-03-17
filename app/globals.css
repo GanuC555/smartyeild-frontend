@@ -100,6 +100,10 @@
   --chart-4: hsl(280, 65%, 60%);
   --chart-5: hsl(260, 70%, 65%);
 
+  /* Art palette — data-as-art accent pair */
+  --pink: hsl(325, 90%, 65%);
+  --glow-pink: 325, 90%, 65%;
+
   /* Custom glass / glow design tokens */
   --glass-bg: hsl(220, 20%, 8%, 0.75);
   --glass-border: hsl(0, 0%, 100%, 0.07);
@@ -171,18 +175,143 @@
     font-style: italic;
   }
 
-  .glow-button {
-    @apply relative;
-    box-shadow:
-      0 0 20px 4px hsl(var(--glow-primary) / 0.3),
-      0 0 60px 12px hsl(var(--glow-primary) / 0.15);
-    transition: box-shadow 0.3s ease;
+  .font-nunito {
+    font-family: var(--font-nunito), sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
   }
 
-  .glow-button:hover {
+  .font-forum {
+    font-family: var(--font-forum), serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .forum-regular {
+    font-family: var(--font-forum), serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .glass-button-wrap {
+    position: relative;
+    display: inline-flex;
+    border-radius: 9999px;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(255, 255, 255, 0.02) 50%,
+      rgba(255, 255, 255, 0.06) 100%
+    );
+    padding: 1px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .glass-button-wrap:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.14) 0%,
+      rgba(255, 255, 255, 0.04) 50%,
+      rgba(255, 255, 255, 0.1) 100%
+    );
+  }
+
+  .glass-button {
+    @apply relative rounded-full;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: none;
     box-shadow:
-      0 0 30px 8px hsl(var(--glow-primary) / 0.4),
-      0 0 80px 20px hsl(var(--glow-primary) / 0.2);
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
+      inset 0 -1px 0 0 rgba(0, 0, 0, 0.1),
+      0 4px 16px -2px rgba(0, 0, 0, 0.4),
+      0 12px 40px -8px rgba(0, 0, 0, 0.5);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .glass-button:hover {
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.12),
+      inset 0 -1px 0 0 rgba(0, 0, 0, 0.1),
+      0 4px 20px -2px rgba(0, 0, 0, 0.5),
+      0 16px 48px -8px rgba(0, 0, 0, 0.6),
+      0 0 24px 2px hsl(var(--glow-primary) / 0.15);
+    transform: translateY(-1px);
+  }
+
+  .glass-button:active {
+    transform: translateY(0);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .glass-button-text {
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    transition: color 0.3s ease;
+  }
+
+  .glass-button:hover .glass-button-text {
+    color: rgba(255, 255, 255, 1);
+  }
+
+  .glass-button-shadow {
+    position: absolute;
+    inset: -1px;
+    pointer-events: none;
+    border-radius: 9999px;
+    box-shadow:
+      0 0 20px 4px hsl(var(--glow-primary) / 0.1),
+      0 0 40px 8px hsl(var(--glow-primary) / 0.05);
+    opacity: 0;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .glass-button-wrap:hover .glass-button-shadow {
+    opacity: 1;
+  }
+
+  .hero-glass-button.glass-button-wrap {
+    background: linear-gradient(
+      135deg,
+    transparent 0%,
+      rgba(255, 255, 255, 0.06) 50%,
+      transparent 100%
+    );
+    padding: 1.5px;
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.2),
+      0 0 18px rgba(255, 255, 255, 0.24),
+      0 10px 30px rgba(0, 0, 0, 0.45);
+  }
+
+  .hero-glass-button.glass-button-wrap .glass-button {
+    background: transparent(103, 103, 103, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.35),
+      0 8px 24px rgba(0, 0, 0, 0.52);
+  }
+
+  .hero-glass-button.glass-button-wrap .glass-button-shadow {
+    inset: -2px;
+    opacity: 0.9;
+    box-shadow:
+      0 0 16px rgba(255, 255, 255, 0.26),
+      0 0 34px rgba(255, 255, 255, 0.16);
+  }
+
+  .hero-glass-button.glass-button-wrap:hover {
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.28),
+      0 0 22px rgba(255, 255, 255, 0.34),
+      0 14px 36px rgba(0, 0, 0, 0.52);
+  }
+
+  .hero-glass-button.glass-button-wrap:hover .glass-button {
+    background: rgba(8, 12, 22, 0.8);
   }
 
   .pill-nav {
@@ -215,6 +344,151 @@
       0 8px 32px -8px rgba(0, 0, 0, 0.6),
       0 32px 64px -16px rgba(0, 0, 0, 0.5);
   }
+
+  .premium-paper-bg {
+    position: relative;
+    isolation: isolate;
+    background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(122, 146, 185, 0.13), transparent 58%),
+      radial-gradient(900px 520px at 92% 0%, rgba(135, 140, 168, 0.1), transparent 56%),
+      linear-gradient(180deg, hsl(228, 27%, 7%) 0%, hsl(228, 30%, 4%) 100%);
+  }
+
+  .premium-paper-bg::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.06;
+    background-image:
+      radial-gradient(circle at 20% 15%, rgba(255, 255, 255, 0.22) 0, rgba(255, 255, 255, 0) 42%),
+      radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.16) 0, rgba(255, 255, 255, 0) 38%);
+  }
+
+  .premium-nav-shell {
+    border-radius: 1rem;
+    background: rgba(13, 17, 30, 0.58);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 20px 40px -22px rgba(0, 0, 0, 0.9);
+  }
+
+  .premium-surface {
+    border-radius: 1rem;
+    border-width: 1px;
+    padding: 1.5rem;
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.07),
+      0 14px 34px -24px rgba(0, 0, 0, 0.75);
+  }
+
+  .premium-surface-soft {
+    border-radius: 0.75rem;
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .premium-muted {
+    color: rgba(255, 255, 255, 0.58);
+  }
+
+  .premium-accent {
+    color: hsl(217, 68%, 73%);
+  }
+
+  .premium-btn-primary {
+    border-radius: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    color: hsl(0, 0%, 97%);
+    background: linear-gradient(180deg, hsl(219, 40%, 56%) 0%, hsl(220, 38%, 50%) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.16),
+      0 12px 24px -16px rgba(103, 128, 181, 0.9);
+  }
+
+  .premium-btn-primary:hover {
+    background: linear-gradient(180deg, hsl(219, 42%, 60%) 0%, hsl(220, 40%, 54%) 100%);
+  }
+
+  .premium-btn-primary:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  /* ── Data-as-Art utilities ── */
+  .art-label {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.35);
+    font-weight: 500;
+  }
+
+  .art-divider-v {
+    width: 1px;
+    background: rgba(255, 255, 255, 0.08);
+    align-self: stretch;
+  }
+
+  .art-divider-h {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.06);
+    width: 100%;
+  }
+
+  .art-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.875rem 0;
+  }
+
+  .art-row + .art-row {
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .text-gradient-bp {
+    background: linear-gradient(135deg, hsl(217, 80%, 56%), hsl(325, 90%, 65%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .pulse-dot-pink {
+    position: relative;
+  }
+
+  .pulse-dot-pink::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: hsl(325, 90%, 65%);
+    animation: pulse-ring 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+/* Infinite marquee scroll */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
 }
 
 /* Pulse animation for live indicator */
