@@ -37,8 +37,8 @@ export default function TwoPoolVisual({
         <div className="flex-1">
           <p className="art-label mb-2">Liquid Pool</p>
           <p
-            className="text-xl font-light tabular-nums"
-            style={{ color: 'hsl(217, 80%, 56%)', fontVariantNumeric: 'tabular-nums' }}
+            className="text-xl font-light text-foreground/80 tabular-nums"
+            style={{ fontVariantNumeric: 'tabular-nums' }}
           >
             ${liquidBalance.toFixed(2)}
           </p>
@@ -52,8 +52,8 @@ export default function TwoPoolVisual({
         <div className="flex-1">
           <p className="art-label mb-2">Strategy Pool</p>
           <p
-            className="text-xl font-light tabular-nums"
-            style={{ color: 'hsl(325, 90%, 65%)', fontVariantNumeric: 'tabular-nums' }}
+            className="text-xl font-light text-foreground/80 tabular-nums"
+            style={{ fontVariantNumeric: 'tabular-nums' }}
           >
             ${strategyPool.toFixed(2)}
           </p>
@@ -67,8 +67,8 @@ export default function TwoPoolVisual({
         <div className="flex-1">
           <p className="art-label mb-2">Daily Yield</p>
           <p
-            className="text-xl font-semibold tabular-nums"
-            style={{ color: 'hsl(325, 90%, 65%)', fontVariantNumeric: 'tabular-nums' }}
+            className="text-xl font-light text-foreground/80 tabular-nums"
+            style={{ fontVariantNumeric: 'tabular-nums' }}
           >
             +${formatRate(dailyEarnRate)}
           </p>

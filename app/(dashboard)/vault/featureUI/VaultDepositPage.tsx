@@ -38,7 +38,10 @@ export default function VaultDepositPage() {
         <div className="art-divider-v" />
         <div className="flex-1 px-8">
           <p className="art-label mb-2">Blended APY</p>
-          <p className="text-2xl font-light text-foreground/85 tabular-nums" style={{ fontVariantNumeric: 'tabular-nums' }}>
+          <p
+            className="text-2xl font-light tabular-nums"
+            style={{ fontVariantNumeric: 'tabular-nums', color: 'hsl(217, 80%, 56%)' }}
+          >
             {vault?.apy ?? 12.5}%
           </p>
         </div>

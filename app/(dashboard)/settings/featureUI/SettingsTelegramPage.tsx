@@ -35,7 +35,7 @@ export default function SettingsTelegramPage() {
         {/* Platform ID — mono, white, no colored accent */}
         <div className="space-y-1">
           <p className="text-xs text-foreground/35">Your Platform ID</p>
-          <p className="font-mono text-lg text-foreground/80">
+          <p className="font-mono text-lg" style={{ color: 'hsl(217, 80%, 56%)' }}>
             {me?.platformId || 'OYS-XXXX'}
           </p>
           <p className="text-xs text-foreground/30 leading-relaxed">

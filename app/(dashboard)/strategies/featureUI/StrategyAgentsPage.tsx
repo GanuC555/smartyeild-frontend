@@ -67,7 +67,10 @@ export default function StrategyAgentsPage() {
 
             <div className="flex items-center gap-6 pl-8">
               <div className="text-right">
-                <p className="text-2xl font-light text-foreground/85 tabular-nums" style={{ fontVariantNumeric: 'tabular-nums' }}>
+                <p
+                  className="text-2xl font-light tabular-nums"
+                  style={{ fontVariantNumeric: 'tabular-nums', color: 'hsl(217, 80%, 56%)' }}
+                >
                   {getLaneAPY(lane)}
                 </p>
                 <p className="art-label mt-1">{lane.id.toUpperCase()}</p>

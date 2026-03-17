@@ -71,16 +71,12 @@ export default function DashboardPage() {
 
         <div className="art-divider-v" />
 
-        {/* Available to Spend — blue */}
+        {/* Available to Spend */}
         <div className="flex-1 pl-8">
           <p className="art-label mb-3">Available to Spend</p>
           <p
-            className="text-3xl font-semibold tabular-nums"
-            style={{
-              letterSpacing: '-0.02em',
-              fontVariantNumeric: 'tabular-nums',
-              color: 'hsl(217, 80%, 56%)',
-            }}
+            className="text-3xl font-light text-foreground/90 tabular-nums"
+            style={{ letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums' }}
           >
             ${Number(portfolio?.availableToSpend || 0).toLocaleString('en-US', {
               minimumFractionDigits: 2,
@@ -121,12 +117,7 @@ export default function DashboardPage() {
                     height="14"
                     viewBox="0 0 14 14"
                     fill="none"
-                    style={{
-                      color:
-                        tx.type === 'deposit'
-                          ? 'hsl(217, 80%, 56%)'
-                          : 'hsl(325, 90%, 65%)',
-                    }}
+                    className="shrink-0 text-foreground/30"
                   >
                     {tx.type === 'deposit' ? (
                       <path d="M7 2v10M2 7l5 5 5-5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
@@ -144,16 +135,10 @@ export default function DashboardPage() {
                   </div>
                 </div>
                 <span
-                  className="text-sm font-medium tabular-nums"
-                  style={{
-                    color:
-                      tx.type === 'deposit'
-                        ? 'hsl(217, 80%, 56%)'
-                        : 'hsl(325, 90%, 65%)',
-                    fontVariantNumeric: 'tabular-nums',
-                  }}
+                  className="text-sm text-foreground/60 tabular-nums"
+                  style={{ fontVariantNumeric: 'tabular-nums' }}
                 >
-                  {tx.type === 'deposit' ? '+' : '-'}${Number(tx.amount).toFixed(2)}
+                  {tx.type === 'deposit' ? '+' : '−'}${Number(tx.amount).toFixed(2)}
                 </span>
               </div>
             ))}

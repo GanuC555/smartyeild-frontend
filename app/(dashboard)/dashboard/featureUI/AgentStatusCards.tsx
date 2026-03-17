@@ -44,15 +44,9 @@ export default function AgentStatusCards({
                 </div>
               </div>
 
-              {/* Right: APY + next run — solid blue only */}
+              {/* Right: APY + next run — white only */}
               <div className="text-right">
-                <p
-                  className="text-sm font-semibold tabular-nums"
-                  style={{
-                    color: item?.apy ? 'hsl(217, 80%, 56%)' : 'rgba(255,255,255,0.3)',
-                    fontVariantNumeric: 'tabular-nums',
-                  }}
-                >
+                <p className="text-sm text-foreground/70 tabular-nums" style={{ fontVariantNumeric: 'tabular-nums' }}>
                   {item?.apy ?? 0}% APY
                 </p>
                 <p className="text-[11px] text-foreground/30 tabular-nums">
