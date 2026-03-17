@@ -1,8 +1,5 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { useCardManagement } from '../featureService/useCardManagement';
 
 export default function CardManagementPage() {
@@ -11,85 +8,97 @@ export default function CardManagementPage() {
 
   if (cardUnavailable) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-16">
         <div>
-          <h1 className="text-3xl font-bold text-white">Yield Card</h1>
-          <p className="mt-2 text-white/50">
-            Spend from accrued yield first. Principal remains protected.
-          </p>
+          <p className="art-label mb-3">Card</p>
+          <h1 className="text-4xl font-light text-foreground/90" style={{ letterSpacing: '-0.02em' }}>
+            Yield Card
+          </h1>
+          <p className="mt-2 text-sm text-foreground/40">Spend from accrued yield. Principal remains protected.</p>
         </div>
-        <Card className="flex flex-col items-center justify-center py-12">
-          <p className="text-xl font-semibold text-white">Card feature coming soon</p>
-          <p className="mt-2 text-sm text-white/40">
-            The virtual card module is under development. Check back later.
-          </p>
-        </Card>
+        <div>
+          <p className="text-sm text-foreground/40">Card module is under development. Check back later.</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-16">
+
+      {/* Page identity */}
       <div>
-        <h1 className="text-3xl font-bold text-white">Yield Card</h1>
-        <p className="mt-2 text-white/50">
-          Spend from accrued yield first. Principal remains protected.
-        </p>
+        <p className="art-label mb-3">Card</p>
+        <h1 className="text-4xl font-light text-foreground/90" style={{ letterSpacing: '-0.02em' }}>
+          Yield Card
+        </h1>
+        <p className="mt-2 text-sm text-foreground/40">Spend from accrued yield. Principal remains protected.</p>
       </div>
 
-      <Card className="space-y-4">
+      {/* Card status — no box, just content */}
+      <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-white/50">Card status</p>
-            <p className="text-xl font-semibold text-white">
+            <p className="art-label mb-2">Card Status</p>
+            <p className="text-2xl font-light text-foreground/85">
               {card?.issued ? 'Virtual Card Active' : 'No Card Issued'}
             </p>
           </div>
-          {card?.issued ? (
-            <Badge variant={card.frozen ? 'warning' : 'success'}>
+          {card?.issued && (
+            <span
+              className="text-xs text-foreground/50 border border-foreground/10 rounded-full px-3 py-1"
+              style={card.frozen ? { color: 'hsl(325, 90%, 65%)', borderColor: 'hsl(325, 90%, 30%)' } : {}}
+            >
               {card.frozen ? 'Frozen' : 'Active'}
-            </Badge>
-          ) : (
-            <Badge variant="neutral">Not issued</Badge>
+            </span>
           )}
         </div>
 
+        {/* CTA — blue for issue, borderless for freeze */}
         <div className="flex gap-3">
           {!card?.issued ? (
-            <Button onClick={issueCard} disabled={loading}>
-              {loading ? 'Issuing...' : 'Issue virtual card'}
-            </Button>
+            <button onClick={issueCard} disabled={loading} className="premium-btn-primary px-6 py-3">
+              {loading ? 'Issuing…' : 'Issue virtual card'}
+            </button>
           ) : (
-            <Button variant="secondary" onClick={toggleFreeze} disabled={loading}>
-              {loading ? 'Updating...' : card.frozen ? 'Unfreeze card' : 'Freeze card'}
-            </Button>
+            <button
+              onClick={toggleFreeze}
+              disabled={loading}
+              className="rounded-xl border border-foreground/10 px-6 py-3 text-sm text-foreground/60 transition-colors hover:border-foreground/20 hover:text-foreground/80 disabled:opacity-40"
+            >
+              {loading ? 'Updating…' : card.frozen ? 'Unfreeze card' : 'Freeze card'}
+            </button>
           )}
         </div>
-      </Card>
+      </div>
 
-      <Card>
-        <h2 className="mb-4 text-xl font-semibold text-white">Recent card transactions</h2>
-        {transactions.length === 0 ? (
-          <p className="text-sm text-white/40">No card transactions yet.</p>
-        ) : (
-          <div className="space-y-3">
+      {/* Transactions — clean list */}
+      {transactions.length > 0 && (
+        <div>
+          <p className="art-label mb-6">Recent Transactions</p>
+          <div>
             {transactions.slice(0, 10).map((tx) => (
-              <div
-                key={tx.id || tx._id}
-                className="flex items-center justify-between border-b border-white/10 pb-3 last:border-0"
-              >
+              <div key={tx.id || tx._id} className="art-row">
                 <div>
-                  <p className="text-white">{tx.merchant || tx.description || 'Card purchase'}</p>
-                  <p className="text-xs text-white/40">
+                  <p className="text-sm text-foreground/80">
+                    {tx.merchant || tx.description || 'Card purchase'}
+                  </p>
+                  <p className="text-[11px] text-foreground/35">
                     {new Date(tx.createdAt || Date.now()).toLocaleString()}
                   </p>
                 </div>
-                <p className="font-semibold text-white">${Number(tx.amount || 0).toFixed(2)}</p>
+                <span className="text-sm font-medium text-foreground/70 tabular-nums" style={{ fontVariantNumeric: 'tabular-nums' }}>
+                  ${Number(tx.amount || 0).toFixed(2)}
+                </span>
               </div>
             ))}
           </div>
-        )}
-      </Card>
+        </div>
+      )}
+
+      {transactions.length === 0 && (
+        <p className="text-sm text-foreground/30">No card transactions yet.</p>
+      )}
     </div>
   );
 }

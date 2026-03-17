@@ -1,11 +1,13 @@
 'use client';
 
 import { useVaultDeposit } from '../featureService/useVaultDeposit';
+import FaucetWidget from './FaucetWidget';
 
 export default function VaultDepositPage() {
   const {
     amount,
     loading,
+    minDepositUsd,
     preview,
     quickAmounts,
     setAmount,
@@ -14,90 +16,107 @@ export default function VaultDepositPage() {
   } = useVaultDeposit();
 
   return (
-    <div className="mx-auto max-w-2xl space-y-8">
+    <div className="mx-auto max-w-2xl space-y-16">
+
+      {/* Page identity */}
       <div>
-        <h1 className="text-3xl font-bold text-white">Deposit USDC</h1>
-        <p className="mt-2 text-white/50">Start earning yield with AI-managed strategies</p>
+        <p className="art-label mb-3">Vault</p>
+        <h1 className="text-4xl font-light text-foreground/90" style={{ letterSpacing: '-0.02em' }}>
+          Deposit USDC
+        </h1>
+        <p className="mt-2 text-sm text-foreground/40">Start earning yield with AI-managed strategies</p>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
-        {[
-          {
-            label: 'Total Value Locked',
-            value: `$${Number(vault?.totalAssets || 0).toLocaleString()}`,
-          },
-          { label: 'Blended APY', value: `${vault?.apy ?? 12.5}%` },
-          {
-            label: 'Share Price',
-            value: `$${Number(vault?.sharePrice || 1).toFixed(4)}`,
-          },
-        ].map((item) => (
-          <div
-            key={item.label}
-            className="rounded-xl border border-white/10 bg-white/5 p-4 text-center"
-          >
-            <p className="mb-1 text-xs text-white/40">{item.label}</p>
-            <p className="font-bold text-white">{item.value}</p>
-          </div>
-        ))}
+      {/* Vault stats — inline, no boxes */}
+      <div className="flex items-stretch gap-0">
+        <div className="flex-1">
+          <p className="art-label mb-2">Total Value Locked</p>
+          <p className="text-2xl font-light text-foreground/85 tabular-nums" style={{ fontVariantNumeric: 'tabular-nums' }}>
+            ${Number(vault?.totalAssets || 0).toLocaleString()}
+          </p>
+        </div>
+        <div className="art-divider-v" />
+        <div className="flex-1 px-8">
+          <p className="art-label mb-2">Blended APY</p>
+          <p className="text-2xl font-light text-foreground/85 tabular-nums" style={{ fontVariantNumeric: 'tabular-nums' }}>
+            {vault?.apy ?? 12.5}%
+          </p>
+        </div>
+        <div className="art-divider-v" />
+        <div className="flex-1 pl-8">
+          <p className="art-label mb-2">Share Price</p>
+          <p className="text-2xl font-light text-foreground/85 tabular-nums" style={{ fontVariantNumeric: 'tabular-nums' }}>
+            ${Number(vault?.sharePrice || 1).toFixed(4)}
+          </p>
+        </div>
       </div>
 
-      <div className="space-y-5 rounded-2xl border border-white/10 bg-white/5 p-6">
+      {/* Deposit form — no outer box */}
+      <div className="space-y-6">
         <div>
-          <label className="mb-2 block text-sm text-white/50">Amount (USDC)</label>
+          <label className="art-label mb-3 block">
+            Amount (USDC) — min ${minDepositUsd}
+          </label>
           <div className="relative">
             <input
               type="number"
               value={amount}
-              onChange={(event) => setAmount(event.target.value)}
+              onChange={(e) => setAmount(e.target.value)}
               placeholder="0.00"
-              className="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-xl text-white outline-none transition-colors focus:border-teal-400/50"
+              className="w-full rounded-xl border border-foreground/10 bg-foreground/5 px-4 py-4 text-2xl font-light text-foreground/90 outline-none transition-colors focus:border-foreground/25"
+              style={{ fontVariantNumeric: 'tabular-nums' }}
             />
-            <span className="absolute right-4 top-1/2 -translate-y-1/2 font-medium text-white/30">
+            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-foreground/30">
               USDC
             </span>
           </div>
 
-          <div className="mt-2 flex gap-2">
-            {quickAmounts.map((quickAmount) => (
+          <div className="mt-3 flex gap-2">
+            {quickAmounts.map((q) => (
               <button
-                key={quickAmount}
-                onClick={() => setAmount(quickAmount)}
-                className="rounded-lg bg-white/10 px-3 py-1 text-xs text-white/50 transition-colors hover:bg-white/20 hover:text-white"
+                key={q}
+                onClick={() => setAmount(q)}
+                className="rounded-lg border border-foreground/10 px-3 py-1.5 text-xs text-foreground/50 transition-colors hover:border-foreground/20 hover:text-foreground/80"
               >
-                ${quickAmount}
+                ${q}
               </button>
             ))}
           </div>
         </div>
 
-        {preview && Number(amount) > 0 ? (
-          <div className="rounded-xl border border-teal-500/20 bg-teal-500/10 p-4">
-            <p className="text-sm text-teal-400">
-              You will receive:{' '}
-              <span className="font-bold">{Number(preview.shares || 0).toFixed(4)} OYS shares</span>
+        {/* Preview — plain text, no box */}
+        {preview && Number(amount) > 0 && (
+          <div className="space-y-1 text-sm text-foreground/55">
+            <p>
+              You receive{' '}
+              <span className="font-medium text-foreground/80">
+                {Number(preview.shares || 0).toFixed(4)} OYS shares
+              </span>
             </p>
-            <p className="mt-1 text-xs text-white/40">
-              50% ({(Number(amount) / 2).toFixed(2)} USDC) → Liquid Balance | 50%
-              → Strategy Pool
+            <p className="text-xs text-foreground/35">
+              50% ({(Number(amount) / 2).toFixed(2)} USDC) → Liquid · 50% → Strategy Pool
             </p>
           </div>
-        ) : null}
+        )}
 
-        <div className="space-y-1 text-xs text-white/25">
-          <p>• Deposit split 50% liquid (always accessible), 50% strategy pool</p>
-          <p>• Principal is protected — only yield and liquid can be spent</p>
-          <p>• AI agents optimize yield within approved protocol limits only</p>
+        {/* Protocol notes */}
+        <div className="space-y-1.5 text-xs text-foreground/30">
+          <p>Deposit splits 50% liquid (always accessible), 50% strategy pool</p>
+          <p>Principal is protected — only yield and liquid can be spent</p>
+          <p>AI agents optimize yield within approved protocol limits only</p>
         </div>
 
+        {/* CTA — only blue element on this page */}
         <button
           onClick={submitDeposit}
-          disabled={loading || !amount || Number(amount) <= 0}
-          className="w-full rounded-xl bg-teal-500 py-4 font-bold text-black transition-colors hover:bg-teal-400 disabled:cursor-not-allowed disabled:opacity-50"
+          disabled={loading || !amount || Number(amount) < minDepositUsd}
+          className="premium-btn-primary w-full py-4"
         >
           {loading ? 'Processing…' : `Deposit ${amount || '0'} USDC`}
         </button>
       </div>
+
+      <FaucetWidget />
     </div>
   );
 }
