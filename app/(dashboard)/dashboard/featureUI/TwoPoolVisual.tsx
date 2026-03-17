@@ -11,26 +11,70 @@ export default function TwoPoolVisual({
   const liquidRatio = total > 0 ? (liquidBalance / total) * 100 : 50;
   const strategyRatio = 100 - liquidRatio;
 
+  const formatRate = (n: number) => {
+    if (n >= 1) return n.toFixed(2);
+    if (n >= 0.01) return n.toFixed(4);
+    return n.toFixed(6);
+  };
+
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-      <h3 className="mb-4 text-white font-semibold">Two-Pool Architecture</h3>
-      <div className="h-4 overflow-hidden rounded-full bg-white/10">
-        <div className="flex h-full">
-          <div className="bg-blue-500" style={{ width: `${liquidRatio}%` }} />
-          <div className="bg-purple-500" style={{ width: `${strategyRatio}%` }} />
-        </div>
+    <div>
+      {/* 2px thin split bar — the identity of this component, gradient on the bar not text */}
+      <div className="relative h-[2px] w-full overflow-hidden rounded-full bg-foreground/10">
+        <div
+          className="absolute left-0 top-0 h-full"
+          style={{ width: `${liquidRatio}%`, background: 'hsl(217, 80%, 56%)' }}
+        />
+        <div
+          className="absolute top-0 h-full"
+          style={{ left: `${liquidRatio}%`, right: 0, background: 'hsl(325, 90%, 65%)' }}
+        />
       </div>
 
-      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <p className="text-sm text-white/70">
-          Liquid: <span className="font-semibold text-blue-400">${liquidBalance.toFixed(2)}</span>
-        </p>
-        <p className="text-sm text-white/70">
-          Strategy: <span className="font-semibold text-purple-400">${strategyPool.toFixed(2)}</span>
-        </p>
-        <p className="text-sm text-white/70">
-          Daily Earn: <span className="font-semibold text-teal-400">${dailyEarnRate.toFixed(2)}</span>
-        </p>
+      {/* Three stats — no boxes, thin vertical dividers */}
+      <div className="mt-6 flex items-start gap-0">
+
+        <div className="flex-1">
+          <p className="art-label mb-2">Liquid Pool</p>
+          <p
+            className="text-xl font-light tabular-nums"
+            style={{ color: 'hsl(217, 80%, 56%)', fontVariantNumeric: 'tabular-nums' }}
+          >
+            ${liquidBalance.toFixed(2)}
+          </p>
+          <p className="mt-1 text-[10px] text-foreground/25">
+            {liquidRatio.toFixed(0)}% · instant access
+          </p>
+        </div>
+
+        <div className="art-divider-v mx-8" />
+
+        <div className="flex-1">
+          <p className="art-label mb-2">Strategy Pool</p>
+          <p
+            className="text-xl font-light tabular-nums"
+            style={{ color: 'hsl(325, 90%, 65%)', fontVariantNumeric: 'tabular-nums' }}
+          >
+            ${strategyPool.toFixed(2)}
+          </p>
+          <p className="mt-1 text-[10px] text-foreground/25">
+            {strategyRatio.toFixed(0)}% · AI deployed
+          </p>
+        </div>
+
+        <div className="art-divider-v mx-8" />
+
+        <div className="flex-1">
+          <p className="art-label mb-2">Daily Yield</p>
+          <p
+            className="text-xl font-semibold tabular-nums"
+            style={{ color: 'hsl(325, 90%, 65%)', fontVariantNumeric: 'tabular-nums' }}
+          >
+            +${formatRate(dailyEarnRate)}
+          </p>
+          <p className="mt-1 text-[10px] text-foreground/25">principal protected</p>
+        </div>
+
       </div>
     </div>
   );

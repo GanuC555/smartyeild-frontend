@@ -14,22 +14,26 @@ export default function DashboardPage() {
   if (isLoading) {
     return (
       <div className="flex h-64 items-center justify-center">
-        <div className="text-white/40">Loading portfolio…</div>
+        <p className="art-label tracking-widest">Loading portfolio…</p>
       </div>
     );
   }
 
   if (!hasDeposit) {
     return (
-      <div className="py-24 text-center">
-        <h2 className="mb-4 text-3xl font-bold text-white">Welcome to OneYield&Spend</h2>
-        <p className="mx-auto mb-8 max-w-md text-white/50">
-          Deposit USDC and AI agents start earning 5–35% APY for you.
-        </p>
-        <Link
-          href="/vault"
-          className="inline-block rounded-xl bg-teal-500 px-8 py-4 font-bold text-black transition-colors hover:bg-teal-400"
+      <div className="py-32 text-center">
+        <p className="art-label mb-6 tracking-widest">OneYield&Spend</p>
+        <h2
+          className="mb-5 text-4xl font-light text-foreground/90"
+          style={{ letterSpacing: '-0.02em' }}
         >
+          Your yield is waiting.
+        </h2>
+        <p className="mx-auto mb-10 max-w-sm text-sm text-foreground/40 leading-relaxed">
+          Deposit USDC. AI agents earn 5–35% APY. Spend your yield anywhere,
+          instantly.
+        </p>
+        <Link href="/vault" className="premium-btn-primary inline-block px-8 py-3 text-sm">
           Make Your First Deposit →
         </Link>
       </div>
@@ -37,87 +41,117 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="space-y-8">
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-          <p className="mb-1 text-sm text-white/50">Your Principal</p>
-          <p className="text-3xl font-bold text-white">
+    <div className="space-y-16">
+
+      {/* ── Stat Strip: three numbers, no boxes ── */}
+      <div className="flex items-stretch gap-0">
+
+        {/* Principal */}
+        <div className="flex-1 pr-8">
+          <p className="art-label mb-3">Principal</p>
+          <p
+            className="text-4xl font-light text-foreground/90 tabular-nums"
+            style={{ letterSpacing: '-0.03em', fontVariantNumeric: 'tabular-nums' }}
+          >
             ${principal.toLocaleString('en-US', { minimumFractionDigits: 2 })}
           </p>
-          <span className="mt-1 inline-block text-xs font-medium text-green-400">
-            100% INTACT
-          </span>
+          <p className="mt-2 text-[11px] text-foreground/30">100% intact</p>
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-          <p className="mb-1 text-sm text-white/50">Yield Earned</p>
+        <div className="art-divider-v" />
+
+        {/* Yield Earned — pink, live */}
+        <div className="flex-1 px-8">
+          <p className="art-label mb-3">Yield Earned</p>
           <YieldCounter
             initialYield={Number(portfolio?.totalYield || 0)}
             perSecondRate={Number(portfolio?.perSecondEarnRate || 0)}
           />
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-          <p className="mb-1 text-sm text-white/50">Available to Spend</p>
-          <p className="text-3xl font-bold text-teal-400">
+        <div className="art-divider-v" />
+
+        {/* Available to Spend — blue */}
+        <div className="flex-1 pl-8">
+          <p className="art-label mb-3">Available to Spend</p>
+          <p
+            className="text-3xl font-semibold tabular-nums"
+            style={{
+              letterSpacing: '-0.02em',
+              fontVariantNumeric: 'tabular-nums',
+              color: 'hsl(217, 80%, 56%)',
+            }}
+          >
             ${Number(portfolio?.availableToSpend || 0).toLocaleString('en-US', {
               minimumFractionDigits: 2,
             })}
           </p>
-          <Link
-            href="/history"
-            className="mt-1 inline-block text-xs text-teal-400/60 transition-colors hover:text-teal-400"
-          >
-            View history →
-          </Link>
+          <p className="mt-2 text-[11px] text-foreground/30">70% LTV + yield</p>
         </div>
       </div>
 
+      {/* ── Two-Pool Architecture ── */}
       <TwoPoolVisual
         liquidBalance={Number(portfolio?.liquidBalance || 0)}
         strategyPool={Number(portfolio?.strategyPool || 0)}
         dailyEarnRate={Number(portfolio?.dailyEarnRate || 0)}
       />
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      {/* ── Strategy + Agents ── */}
+      <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
         <StrategyDonut />
         <AgentStatusCards agents={agents} />
       </div>
 
-      <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-        <h3 className="mb-4 font-semibold text-white">Recent Activity</h3>
+      {/* ── Recent Activity ── */}
+      <div>
+        <p className="art-label mb-6">Recent Activity</p>
         {history.length === 0 ? (
-          <p className="text-sm text-white/30">No activity yet.</p>
+          <p className="text-sm text-foreground/30">No activity yet.</p>
         ) : (
-          <div className="space-y-3">
+          <div>
             {history.slice(0, 5).map((tx) => (
               <div
                 key={tx._id || tx.id || `${tx.type}-${tx.createdAt}`}
-                className="flex items-center justify-between border-b border-white/5 py-2 last:border-0"
+                className="art-row"
               >
-                <div className="flex items-center gap-3">
-                  <div
-                    className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold ${
-                      tx.type === 'deposit'
-                        ? 'bg-green-500/20 text-green-400'
-                        : 'bg-blue-500/20 text-blue-400'
-                    }`}
+                <div className="flex items-center gap-4">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 14 14"
+                    fill="none"
+                    style={{
+                      color:
+                        tx.type === 'deposit'
+                          ? 'hsl(217, 80%, 56%)'
+                          : 'hsl(325, 90%, 65%)',
+                    }}
                   >
-                    {tx.type === 'deposit' ? '↓' : '→'}
-                  </div>
+                    {tx.type === 'deposit' ? (
+                      <path d="M7 2v10M2 7l5 5 5-5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                    ) : (
+                      <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                    )}
+                  </svg>
                   <div>
-                    <p className="text-sm capitalize text-white">
+                    <p className="text-sm capitalize text-foreground/80">
                       {tx.type.replace('_', ' ')}
                     </p>
-                    <p className="text-xs text-white/30">
+                    <p className="text-[11px] text-foreground/30">
                       {new Date(tx.createdAt).toLocaleString()}
                     </p>
                   </div>
                 </div>
                 <span
-                  className={`text-sm font-medium ${
-                    tx.type === 'deposit' ? 'text-green-400' : 'text-white'
-                  }`}
+                  className="text-sm font-medium tabular-nums"
+                  style={{
+                    color:
+                      tx.type === 'deposit'
+                        ? 'hsl(217, 80%, 56%)'
+                        : 'hsl(325, 90%, 65%)',
+                    fontVariantNumeric: 'tabular-nums',
+                  }}
                 >
                   {tx.type === 'deposit' ? '+' : '-'}${Number(tx.amount).toFixed(2)}
                 </span>
@@ -126,6 +160,7 @@ export default function DashboardPage() {
           </div>
         )}
       </div>
+
     </div>
   );
 }

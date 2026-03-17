@@ -39,8 +39,8 @@ export default function YieldCounter({
   return (
     <div>
       <p
-        className="text-gradient-bp text-3xl font-semibold tabular-nums"
-        style={{ fontVariantNumeric: 'tabular-nums' }}
+        className="text-3xl font-semibold tabular-nums"
+        style={{ fontVariantNumeric: 'tabular-nums', color: 'hsl(325, 90%, 65%)' }}
       >
         ${formatYield(current)}
       </p>

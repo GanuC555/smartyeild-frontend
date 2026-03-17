@@ -1,8 +1,14 @@
-const EMOJIS: Record<string, string> = {
-  guardian: '🛡️',
-  balancer: '⚖️',
-  hunter: '🎯',
+const STRATEGY_META: Record<string, { label: string; description: string }> = {
+  guardian: { label: 'Guardian', description: 'Risk management & capital protection' },
+  balancer: { label: 'Balancer', description: 'Pool rebalancing & liquidity optimization' },
+  hunter:   { label: 'Hunter',   description: 'Yield opportunity scanning' },
 };
+
+function statusDotColor(status?: string): string {
+  if (!status || status === 'idle') return 'rgba(255,255,255,0.2)';
+  if (status === 'running' || status === 'active') return 'hsl(217, 80%, 56%)';
+  return 'hsl(325, 90%, 65%)';
+}
 
 export default function AgentStatusCards({
   agents,
@@ -12,28 +18,47 @@ export default function AgentStatusCards({
   const strategies = ['guardian', 'balancer', 'hunter'];
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-      <h3 className="mb-4 font-semibold text-white">Agent Status</h3>
-      <div className="space-y-3">
+    <div>
+      <p className="art-label mb-6">AI Agents</p>
+
+      <div>
         {strategies.map((strategy) => {
-          const item = agents.find((agent) => agent.strategy === strategy);
+          const item = agents.find((a) => a.strategy === strategy);
+          const meta = STRATEGY_META[strategy];
+          const dot = statusDotColor(item?.status);
+
           return (
-            <div
-              key={strategy}
-              className="rounded-xl border border-white/10 bg-white/5 p-4"
-            >
-              <div className="mb-2 flex items-center justify-between">
-                <p className="text-white">
-                  {EMOJIS[strategy]} <span className="capitalize">{strategy}</span>
-                </p>
-                <p className="text-xs text-white/50">{item?.status ?? 'idle'}</p>
+            <div key={strategy} className="art-row">
+              {/* Left: status dot + name + description */}
+              <div className="flex items-center gap-3">
+                <span
+                  className="h-2 w-2 flex-shrink-0 rounded-full"
+                  style={{
+                    background: dot,
+                    boxShadow: dot !== 'rgba(255,255,255,0.2)' ? `0 0 6px ${dot}` : 'none',
+                  }}
+                />
+                <div>
+                  <p className="text-sm font-medium text-foreground/85">{meta.label}</p>
+                  <p className="text-[11px] text-foreground/35">{meta.description}</p>
+                </div>
               </div>
-              <p className="text-sm text-white/60">
-                APY: <span className="text-teal-400">{item?.apy ?? 0}%</span>
-              </p>
-              <p className="text-sm text-white/60">
-                Next run: {item?.nextRunInMinutes ?? 0}m
-              </p>
+
+              {/* Right: APY + next run — solid blue only */}
+              <div className="text-right">
+                <p
+                  className="text-sm font-semibold tabular-nums"
+                  style={{
+                    color: item?.apy ? 'hsl(217, 80%, 56%)' : 'rgba(255,255,255,0.3)',
+                    fontVariantNumeric: 'tabular-nums',
+                  }}
+                >
+                  {item?.apy ?? 0}% APY
+                </p>
+                <p className="text-[11px] text-foreground/30 tabular-nums">
+                  {item?.nextRunInMinutes ? `${item.nextRunInMinutes}m` : 'standby'}
+                </p>
+              </div>
             </div>
           );
         })}
