@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Forum, Geist, Geist_Mono, Nunito } from "next/font/google";
 import Script from "next/script";
+import '@onelabs/dapp-kit/dist/index.css';
 import "./globals.css";
 import { Providers } from "@/lib/providers";
 import { TelegramInit } from "@/components/layout/TelegramInit";

@@ -3,8 +3,6 @@ import { useEffect } from 'react';
 import { getTelegramWebApp, isTelegramMiniApp } from '@/lib/telegram';
 import { api } from '@/lib/api/client';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-
 /**
  * Initialises the Telegram Mini App SDK when the page is opened inside Telegram.
  * - Calls WebApp.ready()  → hides Telegram's native loading spinner
@@ -26,19 +24,13 @@ export function TelegramInit() {
     // Silent auth: exchange Telegram initData for a JWT so all API calls work
     (async () => {
       try {
-        const res = await fetch(`${API_URL}/auth/telegram-mini-app`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ initData: twa.initData }),
-        });
-        if (res.ok) {
-          const { accessToken } = await res.json();
-          api.setToken(accessToken);
-        } else {
-          // Not linked yet — user will see link instructions from bot
-          console.warn('[TelegramInit] Mini App auth failed:', await res.text());
-        }
+        const { accessToken } = await api.post<{ accessToken: string }>(
+          '/auth/telegram-mini-app',
+          { initData: twa.initData },
+        );
+        api.setToken(accessToken);
       } catch (e) {
+        // Not linked yet — user will see link instructions from bot
         console.warn('[TelegramInit] Mini App auth error:', e);
       }
     })();

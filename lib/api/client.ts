@@ -1,5 +1,4 @@
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://smartyeild-backend.onrender.com';
 
 // Telegram Mini App helpers (inline to avoid circular imports)
 const _getTwa = () =>

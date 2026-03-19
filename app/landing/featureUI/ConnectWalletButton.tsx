@@ -14,19 +14,37 @@ export default function ConnectWalletButton({
   const { loading, connect } = useWalletConnect();
   const wallet = useWallet();
   const [launchClicked, setLaunchClicked] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const walletConnected = wallet.isConnected();
   const isConnected = launchClicked && walletConnected;
 
+  const log = (event: string, details?: Record<string, unknown>) => {
+    console.info('[LandingHero][LaunchApp]', event, {
+      walletConnected,
+      launchClicked,
+      isModalOpen,
+      loading,
+      ...details,
+    });
+  };
+
   useEffect(() => {
-    if (launchClicked && walletConnected && !loading) {
-      void connect();
-    }
+    log('effect-check');
+    if (!launchClicked || !walletConnected || loading) return;
+
+    // Run auth once per launch click and prevent repeated re-triggers.
+    log('effect-trigger-connect');
+    setLaunchClicked(false);
+    setIsModalOpen(false);
+    void connect();
   }, [launchClicked, walletConnected, loading, connect]);
 
   const onLaunchClick = () => {
+    log('button-click');
     setLaunchClicked(true);
-    if (walletConnected && !loading) {
-      void connect();
+    if (!walletConnected) {
+      log('open-connect-modal');
+      setIsModalOpen(true);
     }
   };
 
@@ -49,6 +67,11 @@ export default function ConnectWalletButton({
   // Not connected — use ConnectModal which properly requests all wallet permissions
   return (
     <ConnectModal
+      open={isModalOpen}
+      onOpenChange={(open) => {
+        log('modal-open-change', { open });
+        setIsModalOpen(open);
+      }}
       trigger={
         <GlassButton
           onClick={onLaunchClick}

@@ -35,7 +35,7 @@ export default function TwoPoolVisual({
       <div className="mt-6 flex items-start gap-0">
 
         <div className="flex-1">
-          <p className="art-label mb-2">Liquid Pool</p>
+          <p className="art-label mb-2">Advance Credit</p>
           <p
             className="text-xl font-light text-foreground/80 tabular-nums"
             style={{ fontVariantNumeric: 'tabular-nums' }}
@@ -43,14 +43,14 @@ export default function TwoPoolVisual({
             ${liquidBalance.toFixed(2)}
           </p>
           <p className="mt-1 text-[10px] text-foreground/25">
-            {liquidRatio.toFixed(0)}% · instant access
+            {liquidRatio.toFixed(0)}% · spend today
           </p>
         </div>
 
         <div className="art-divider-v mx-8" />
 
         <div className="flex-1">
-          <p className="art-label mb-2">Strategy Pool</p>
+          <p className="art-label mb-2">Vault Reserve</p>
           <p
             className="text-xl font-light text-foreground/80 tabular-nums"
             style={{ fontVariantNumeric: 'tabular-nums' }}
@@ -58,7 +58,7 @@ export default function TwoPoolVisual({
             ${strategyPool.toFixed(2)}
           </p>
           <p className="mt-1 text-[10px] text-foreground/25">
-            {strategyRatio.toFixed(0)}% · AI deployed
+            {strategyRatio.toFixed(0)}% · unlocks at maturity
           </p>
         </div>
 
