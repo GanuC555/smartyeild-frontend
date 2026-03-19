@@ -48,7 +48,7 @@ const faqs = [
 
 export default function LandingFaqSection() {
   return (
-    <section className="relative z-20 px-4 py-24 md:py-32 bg-black rounded-4xl">
+    <section id="docs" className="relative  forum-regular z-20 px-4 py-24 md:py-32 bg-black rounded-4xl">
       <div className="mx-auto max-w-7xl">
         <ScrollReveal>
           <div className="mb-16 text-center text-white">

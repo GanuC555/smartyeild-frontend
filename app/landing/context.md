@@ -4,4 +4,6 @@ The landing page is the public home screen — the first thing users see before 
 - Hero section has a ConnectWalletButton that triggers useWalletConnect
 - On successful wallet connect + auth, redirects to /dashboard
 - All sections use scroll-reveal animations via Framer Motion
+- Features and Services section cards use reusable `GlowingEffect` UI shell from components/ui
+- Footer watermark uses reusable `FlickeringGrid` text effect for OneYield&Spend branding
 - No authentication required — this is the public entry point

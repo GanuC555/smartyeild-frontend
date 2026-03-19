@@ -34,10 +34,15 @@ export function useWalletConnect() {
       toast.success('Wallet connected');
       router.push('/dashboard');
     } catch (error: unknown) {
+      console.error('[useWalletConnect] sign-in error:', error);
       const message =
         error instanceof Error
           ? error.message
-          : 'Connection failed — verify backend is running';
+          : typeof error === 'object' && error !== null && 'message' in error
+            ? String((error as any).message)
+            : typeof error === 'string'
+              ? error
+              : 'Sign-in failed — check console for details';
       toast.error(message);
     } finally {
       setLoading(false);

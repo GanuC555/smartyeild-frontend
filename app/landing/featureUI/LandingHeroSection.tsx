@@ -14,7 +14,7 @@ export default function LandingHeroSection() {
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, type: 'spring' }}
-        className="glass-card mb-8 flex h-16 w-16 items-center justify-center rounded-2xl"
+        className="backdrop-blur-lg border border-foreground/10 mb-8 flex h-16 w-16 items-center justify-center rounded-2xl"
       >
         <Wallet className="h-8 w-8 text-foreground/80" strokeWidth="1.5" />
       </motion.div>
@@ -38,7 +38,8 @@ export default function LandingHeroSection() {
         transition={{ delay: 0.1, duration: 1.1 }}
         className="relative z-10 mb-6 max-w-4xl text-center text-5xl leading-[1.1] tracking-tight md:text-7xl lg:text-8xl"
       >
-        <span className="text-white font-light">Live Off Your</span>{' '}
+        <span className="forum-regular text-white">
+          Live Off Your</span>{' '}
         <span className="font-serif-italic text-white">Yield</span>
       </motion.h1>
 
@@ -46,7 +47,7 @@ export default function LandingHeroSection() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.5 }}
-        className="relative z-10 mb-10 max-w-lg text-center text-base text-white md:text-lg"
+        className="relative forum-regular z-10 mb-10 max-w-lg text-center text-base text-white md:text-lg"
       >
         Non-custodial yield vault with a real-world spending layer. Deposit USDC,
         let AI optimize your returns on OneChain, and spend instantly worldwide.

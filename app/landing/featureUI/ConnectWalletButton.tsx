@@ -1,6 +1,7 @@
 'use client';
 
-import { useConnectWallet, useWallets } from '@onelabs/dapp-kit';
+import { ConnectModal } from '@onelabs/dapp-kit';
+import { useEffect, useState } from 'react';
 import { useWallet } from '@/lib/wallet/wallet-context';
 import { useWalletConnect } from '../featureService/useWalletConnect';
 import { GlassButton } from '@/components/ui/glass-button';
@@ -12,39 +13,51 @@ export default function ConnectWalletButton({
 }) {
   const { loading, connect } = useWalletConnect();
   const wallet = useWallet();
-  const isConnected = wallet.isConnected();
-  const wallets = useWallets();
-  const { mutate: connectWallet, isPending: isConnecting } = useConnectWallet();
+  const [launchClicked, setLaunchClicked] = useState(false);
+  const walletConnected = wallet.isConnected();
+  const isConnected = launchClicked && walletConnected;
 
-  const handleClick = () => {
-    if (!isConnected) {
-      // Trigger dapp-kit wallet connection — pick first available wallet (OneWallet)
-      const target = wallets[0];
-      if (target) {
-        connectWallet({ wallet: target });
-      }
-    } else {
-      // Wallet already connected — sign nonce and authenticate
-      connect();
+  useEffect(() => {
+    if (launchClicked && walletConnected && !loading) {
+      void connect();
+    }
+  }, [launchClicked, walletConnected, loading, connect]);
+
+  const onLaunchClick = () => {
+    setLaunchClicked(true);
+    if (walletConnected && !loading) {
+      void connect();
     }
   };
 
-  const buttonLabel = isConnecting
-    ? 'Connecting...'
-    : loading
-      ? 'Signing in...'
-      : isConnected
-        ? 'Sign In'
-        : label;
+  const buttonLabel = loading ? 'Signing in...' : isConnected ? 'Sign In' : label;
 
+  // Wallet exists but user hasn't manually launched yet -> keep as launch action
+  if (walletConnected) {
+    return (
+      <GlassButton
+        onClick={onLaunchClick}
+        disabled={loading}
+        className="hero-glass-button z-20"
+        contentClassName="text-white font-semibold"
+      >
+        {buttonLabel}
+      </GlassButton>
+    );
+  }
+
+  // Not connected — use ConnectModal which properly requests all wallet permissions
   return (
-    <GlassButton
-      onClick={handleClick}
-      disabled={isConnecting || loading}
-      className="hero-glass-button z-20"
-      contentClassName="text-white font-semibold"
-    >
-      {buttonLabel}
-    </GlassButton>
+    <ConnectModal
+      trigger={
+        <GlassButton
+          onClick={onLaunchClick}
+          className="hero-glass-button z-20"
+          contentClassName="text-white font-semibold"
+        >
+          {label}
+        </GlassButton>
+      }
+    />
   );
 }

@@ -1,6 +1,8 @@
 The dashboard is a borderless black canvas showing a live snapshot of the user's DeFi portfolio.
 Each component has its own visual identity based on the data type it represents — no generic boxes.
 
+- App shell uses a subtle animated aurora background behind all dashboard pages
+
 - Three-column stat strip: Principal (thin white font), Yield Earned (solid pink, live pulse dot), Available to Spend (solid blue)
 - TwoPoolVisual: 2px split bar (blue=liquid, pink=strategy) with whisper stats below — no heading, no box
 - StrategyDonut: large solid-blue APY above, floating donut chart, side legend list — no container

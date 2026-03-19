@@ -1,6 +1,14 @@
 const API_URL =
   process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
+// Telegram Mini App helpers (inline to avoid circular imports)
+const _getTwa = () =>
+  typeof window !== 'undefined' ? (window as any).Telegram?.WebApp : null;
+const _isMiniApp = () => {
+  const twa = _getTwa();
+  return !!(twa?.initData?.length);
+};
+
 class ApiClient {
   private accessToken: string | null = null;
 
@@ -28,6 +36,25 @@ class ApiClient {
     });
 
     if (res.status === 401) {
+      // In Telegram Mini App — try silent re-auth before anything else
+      if (_isMiniApp()) {
+        try {
+          const twa = _getTwa();
+          const r = await fetch(`${API_URL}/auth/telegram-mini-app`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ initData: twa.initData }),
+          });
+          if (r.ok) {
+            const { accessToken } = await r.json();
+            this.setToken(accessToken);
+            return this.request(path, options);
+          }
+        } catch {}
+        throw new Error('Unauthorized');
+      }
+
+      // Normal browser — try refresh token
       try {
         const rt =
           typeof window !== 'undefined'
@@ -91,6 +118,8 @@ if (typeof window !== 'undefined') {
 }
 
 export const authApi = {
+  telegramMiniAppAuth: (initData: string) =>
+    api.post<{ accessToken: string }>('/auth/telegram-mini-app', { initData }),
   getNonce: (address: string) =>
     api.post<{ nonce: string }>('/auth/nonce', {
       address,
@@ -236,6 +265,15 @@ export const laneApi = {
   allocate: (body: { lane1Bps: number; lane2Bps: number; lane3Bps: number }) =>
     api.post<LanePosition>('/lanes/allocate', body),
   getDecisions: (lane: string) => api.get<any[]>(`/lanes/${lane}/decisions`),
+};
+
+export const faucetApi = {
+  getOctBalance: (address: string) =>
+    api.get<{ balance: string; balanceOct: string }>(`/onechain/oct-balance/${address}`),
+  getUsdBalance: (address: string) =>
+    api.get<{ balance: string; balanceUsd: string }>(`/onechain/usd-balance/${address}`),
+  requestUsd: () =>
+    api.post<{ success: boolean; digest?: string; message: string }>('/onechain/faucet'),
 };
 
 export const spendApi = {

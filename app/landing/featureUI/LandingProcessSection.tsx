@@ -1,8 +1,8 @@
 'use client';
 
 import { motion, useInView } from 'framer-motion';
-import { BarChart3, ShoppingCart, TrendingUp } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { ArrowRight, Coins, CreditCard, Sparkles, TrendingUp } from 'lucide-react';
+import { useRef } from 'react';
 
 function ScrollReveal({
   children,
@@ -28,101 +28,121 @@ function ScrollReveal({
 
 const steps = [
   {
-    number: '01',
-    title: 'Deposit USDC',
-    desc: 'Connect your wallet and deposit USDC. Receipt Tokens track your growing balance.',
+    title: 'Deposit once',
+    desc: 'Users deposit USDC one time and keep full ownership of their principal position.',
+    icon: Coins,
   },
   {
-    number: '02',
-    title: 'AI Routes Capital',
-    desc: 'The AI analyzes protocols and deploys capital for the best risk-adjusted return.',
+    title: 'Spend from yield first',
+    desc: 'Daily payments use earned yield before touching advance, so savings stay productive longer.',
+    icon: CreditCard,
   },
   {
-    number: '03',
-    title: 'Yield & Spend',
-    desc: 'Card swipes auto-liquidate only enough earned yield to settle purchases.',
+    title: 'Grow with AI + protocol rails',
+    desc: 'Smart routing feeds OneDex and OnePredict activity while improving user returns over time.',
+    icon: Sparkles,
+  },
+  {
+    title: 'OneChain flywheel',
+    desc: 'More retained TVL, more transactions, more fees, and stronger daily user stickiness on-chain.',
+    icon: TrendingUp,
   },
 ];
 
 export default function LandingProcessSection() {
-  const [activeStep, setActiveStep] = useState(0);
-  const step = steps[activeStep];
-
   return (
-    <section id="process" className="relative z-20 px-4 py-24 md:py-32 ">
+    <section id="workflow" className="forum-regular relative z-20 px-4 py-24 md:py-32 ">
       <div className="spotlight pointer-events-none absolute inset-0" />
       <div className="mx-auto max-w-7xl">
         <ScrollReveal>
           <div className="mb-16 text-center text-white">
             <h2 className="text-4xl font-light md:text-5xl lg:text-6xl">
-              <span>How OneYield</span>{' '}
-              <span className="font-serif-italic">Works</span>
+              <span>Workflow</span>{' '}
+              <span className="font-serif-italic">That Feels Human</span>
             </h2>
+            <p className="mx-auto mt-5 max-w-3xl text-sm leading-relaxed text-white/70 md:text-base">
+              A simple value journey: users keep money productive, spend with less friction, and help OneChain grow
+              through OneDex and OnePredict activity.
+            </p>
           </div>
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
-          <div className="glass-card-subtle mb-8 rounded-2xl p-2 border border-white/10 bg-white/5 bg-black">
-            <div className="grid grid-cols-3 gap-2 bg-black rounded-xl p-1">
-              {steps.map((entry, index) => (
-                <button
-                  key={entry.number}
-                  onClick={() => setActiveStep(index)}
-                  className={`rounded-xl py-3 text-sm font-medium transition-all duration-300 ${
-                    activeStep === index
-                      ? 'bg-white/10 text-white'
-                      : 'text-white/30 hover:text-white/60'
-                  }`}
-                >
-                  STEP {index + 1}
-                </button>
-              ))}
+          <div className="glass-card-subtle rounded-3xl border border-white/10 bg-black/70 p-5 md:p-8">
+            <div className="grid gap-4 md:grid-cols-7 md:items-stretch">
+              {steps.map((step, index) => {
+                const Icon = step.icon;
+                const showArrow = index < steps.length - 1;
+
+                return (
+                  <div key={step.title} className="contents">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: index * 0.08 }}
+                      className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-left md:col-span-1"
+                    >
+                      <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/15 bg-white/10">
+                        <Icon className="h-4 w-4 text-white/80" />
+                      </div>
+                      <h3 className="text-sm font-medium text-white md:text-base">{step.title}</h3>
+                      <p className="mt-2 text-xs leading-relaxed text-white/65 md:text-sm">{step.desc}</p>
+                    </motion.div>
+
+                    {showArrow ? (
+                      <div className="hidden items-center justify-center text-white/40 md:col-span-1 md:flex">
+                        <ArrowRight className="h-4 w-4" />
+                      </div>
+                    ) : null}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </ScrollReveal>
 
         <ScrollReveal delay={0.2}>
-          <div className="glass-card-subtle rounded-2xl p-8 md:p-12 border border-white/10 bg-white/5 text-white">
-            <div className="grid items-center gap-12 md:grid-cols-2">
-              <div className="space-y-4 bg-black rounded-xl p-6">
-                <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
-                  {[
-                    { name: 'OneDex Liquidity', score: 60, icon: BarChart3 },
-                    { name: 'OnePredict Markets', score: 15, icon: TrendingUp },
-                    { name: 'Aave Supply (Beta)', score: 25, icon: ShoppingCart },
-                  ].map((item) => (
-                    <div key={item.name} className="flex items-center gap-3 border-t border-white/10 py-2.5 first:border-0 first:pt-0">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10">
-                        <item.icon className="h-3.5 w-3.5 text-white/50" />
-                      </div>
-                      <div className="flex-1">
-                        <span className="text-xs text-white/70">{item.name}</span>
-                        <div className="mt-1 h-1.5 rounded-full bg-white/10">
-                          <div className="h-full rounded-full bg-white/30" style={{ width: `${item.score}%` }} />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+          <div className="glass-card-subtle rounded-3xl border border-white/10 bg-white/5 p-8 text-white md:p-12">
+            <div className="grid gap-6 md:grid-cols-3">
+              <div className="rounded-2xl border border-white/10 bg-black/40 p-5">
+                <p className="text-xs uppercase tracking-[0.16em] text-white/45">User Value</p>
+                <h4 className="mt-3 text-lg font-medium">Save + Spend Together</h4>
+                <p className="mt-2 text-sm leading-relaxed text-white/70">
+                  Users are not forced to choose between locked yield and daily liquidity.
+                </p>
               </div>
 
-              <div>
-                <motion.div
-                  key={activeStep}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.4 }}
-                >
-                  <span className="text-6xl font-light text-white/20 md:text-8xl">
-                    {step.number}
-                  </span>
-                  <h3 className="mt-4 text-2xl font-medium text-white md:text-3xl">
-                    {step.title}
-                  </h3>
-                  <p className="mt-4 leading-relaxed text-white/80">{step.desc}</p>
-                </motion.div>
+              <div className="rounded-2xl border border-white/10 bg-black/40 p-5">
+                <p className="text-xs uppercase tracking-[0.16em] text-white/45">Protocol Synergy</p>
+                <h4 className="mt-3 text-lg font-medium">OneDex + OnePredict Utility</h4>
+                <p className="mt-2 text-sm leading-relaxed text-white/70">
+                  Capital routing and market participation continuously feed activity into core OneChain tools.
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-white/10 bg-black/40 p-5">
+                <p className="text-xs uppercase tracking-[0.16em] text-white/45">Chain-Level Impact</p>
+                <h4 className="mt-3 text-lg font-medium">Sustained On-Chain Growth</h4>
+                <p className="mt-2 text-sm leading-relaxed text-white/70">
+                  Higher TVL retention, repeat payments, and recurring swaps create long-term ecosystem momentum.
+                </p>
               </div>
             </div>
+
+            <div className="mt-6 rounded-2xl border border-white/10 bg-black/50 p-5">
+              <p className="text-sm text-white/75 md:text-base">
+                <span className="text-white">Narration tip:</span> “OneYield turns one deposit into a continuous value loop —
+                users win with flexibility, OneDex and OnePredict win with sustained demand, and OneChain wins with deeper,
+                stickier on-chain behavior.”
+              </p>
+            </div>
+          </div>
+        </ScrollReveal>
+
+        <ScrollReveal delay={0.3}>
+          <div className="mx-auto mt-6 max-w-5xl rounded-2xl border border-white/10 bg-black/40 p-4 text-center text-xs text-white/60 md:text-sm">
+            Workflow = Deposit → Smart Routing → Yield-First Spending → Protocol Utility → OneChain Flywheel
           </div>
         </ScrollReveal>
       </div>

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useVaultDeposit } from '../featureService/useVaultDeposit';
 import FaucetWidget from './FaucetWidget';
 
@@ -117,6 +118,14 @@ export default function VaultDepositPage() {
         >
           {loading ? 'Processing…' : `Deposit ${amount || '0'} USDC`}
         </button>
+
+        {/* Withdraw link — for users who already have an active position */}
+        <Link
+          href="/vault/withdraw"
+          className="block text-center text-xs text-foreground/30 transition-colors hover:text-foreground/60"
+        >
+          Already deposited? Withdraw your principal →
+        </Link>
       </div>
 
       <FaucetWidget />

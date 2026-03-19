@@ -5,7 +5,6 @@ import LandingFeaturesSection from './LandingFeaturesSection';
 import LandingFooter from './LandingFooter';
 import LandingHeroSection from './LandingHeroSection';
 import LandingNavbar from './LandingNavbar';
-import LandingProcessSection from './LandingProcessSection';
 import LandingQuoteSection from './LandingQuoteSection';
 import LandingServicesSection from './LandingServicesSection';
 import { GrainGradient } from '@paper-design/shaders-react';
@@ -35,7 +34,6 @@ export default function LandingPage() {
           <LandingHeroSection />
           <LandingFeaturesSection />
           <LandingServicesSection />
-          <LandingProcessSection />
           <LandingQuoteSection />
           <LandingFaqSection />
         </main>

@@ -1,8 +1,10 @@
 'use client';
 
+import { Menu, Wallet, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { ConnectButton } from '@onelabs/dapp-kit';
+import { useState } from 'react';
 import { useWallet } from '@/lib/wallet/wallet-context';
 import { useStore } from '@/lib/store';
 
@@ -25,6 +27,7 @@ export default function AppHeader() {
   const router = useRouter();
   const wallet = useWallet();
   const { walletAddress, clearAuth } = useStore();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const onDisconnect = async () => {
     await wallet.disconnect();
@@ -33,40 +36,91 @@ export default function AppHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-black/30 px-6 py-4 backdrop-blur-sm">
-      <div className="mx-auto flex max-w-7xl items-center justify-between">
-        <Link href="/dashboard" className="text-lg font-bold text-white">
-          OneYield<span className="text-teal-400">&Spend</span>
-        </Link>
+    <header className="forum-regular fixed left-0 right-0 top-0 z-50 px-4 py-4 md:px-8">
+      <div className=" mx-auto max-w-7xl px-4 py-3 md:px-6">
+        <div className="flex items-center justify-between gap-4">
+          <Link href="/dashboard" className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-foreground/10 bg-foreground/10 backdrop-blur-sm">
+              <Wallet className="h-4 w-4 text-foreground/90" />
+            </div>
+            <span className="forum-regular text-lg font-semibold  text-foreground/90">
+              OneYield
+            </span>
+          </Link>
 
-        <nav className="hidden gap-6 md:flex">
-          {NAV_ITEMS.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`text-sm transition-colors ${
-                pathname?.startsWith(item.href)
-                  ? 'font-medium text-white'
-                  : 'text-white/50 hover:text-white/80'
-              }`}
+          <nav className="hidden md:block">
+            <div className="backdrop-blur-sm border border-foreground/10  rounded-full flex items-center gap-1">
+              {NAV_ITEMS.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`rounded-full px-4 py-2 text-sm transition-colors ${
+                    pathname?.startsWith(item.href)
+                      ? 'bg-foreground/10 text-foreground/95'
+                      : 'text-foreground/60 hover:text-foreground/90'
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+          </nav>
+
+          <div className="hidden items-center gap-3 md:flex ">
+            <span className="backdrop-blur-sm rounded-full border border-foreground/10 bg-foreground/5 px-3 py-1 font-mono text-xs text-foreground/60">
+              {truncateAddress(walletAddress || '')}
+            </span>
+            <button
+              onClick={onDisconnect}
+              className="backdrop-blur-sm rounded-full border border-foreground/10 px-3 py-1 text-md text-foreground/55 transition-colors hover:bg-foreground/5 hover:text-foreground/80"
             >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+              Disconnect
+            </button>
+          </div>
 
-        <div className="flex items-center gap-3">
-          <ConnectButton />
-          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 font-mono text-xs text-white/50">
-            {truncateAddress(walletAddress || '')}
-          </span>
           <button
-            onClick={onDisconnect}
-            className="text-xs text-white/30 transition-colors hover:text-white/60"
+            onClick={() => setMobileOpen((value) => !value)}
+            className="flex p-2 md:hidden"
           >
-            Disconnect
+            {mobileOpen ? (
+              <X className="h-5 w-5 text-foreground/80" />
+            ) : (
+              <Menu className="h-5 w-5 text-foreground/80" />
+            )}
           </button>
         </div>
+
+        {mobileOpen ? (
+          <div className="glass-card mt-4 overflow-hidden rounded-2xl md:hidden">
+            <div className="flex flex-col gap-1 p-3">
+              {NAV_ITEMS.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={`rounded-xl px-4 py-3 text-sm transition-colors ${
+                    pathname?.startsWith(item.href)
+                      ? 'bg-foreground/10 text-foreground/95'
+                      : 'text-foreground/65 hover:bg-foreground/5 hover:text-foreground/90'
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+              <div className="mt-2 space-y-2">
+                <div className="rounded-xl border border-foreground/10 bg-foreground/5 px-3 py-2 font-mono text-xs text-foreground/60">
+                  {truncateAddress(walletAddress || '') || 'Wallet not connected'}
+                </div>
+                <button
+                  onClick={onDisconnect}
+                  className="w-full rounded-xl border border-foreground/10 px-4 py-2 text-sm text-foreground/70 transition-colors hover:bg-foreground/5"
+                >
+                  Disconnect
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : null}
       </div>
     </header>
   );
