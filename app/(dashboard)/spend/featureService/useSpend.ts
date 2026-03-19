@@ -50,7 +50,7 @@ export function useSpend() {
       // Record in backend with the real tx digest
       return spendApi.qrPay({
         ...params,
-        txDigest: onChainResult.digest,
+        onChainTxHash: onChainResult.digest,
       });
     },
     onSuccess: () => {

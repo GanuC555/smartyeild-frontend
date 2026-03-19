@@ -278,7 +278,7 @@ export const faucetApi = {
 
 export const spendApi = {
   getBalance: () => api.get<SpendBalance>('/spend/balance'),
-  qrPay: (body: { recipientAddress: string; amount: string; note?: string; txDigest?: string }) =>
+  qrPay: (body: { recipientAddress: string; amount: string; note?: string; onChainTxHash?: string }) =>
     api.post<SpendTransaction>('/spend/qr-pay', body),
   getHistory: () => api.get<SpendTransaction[]>('/spend/history'),
 };
