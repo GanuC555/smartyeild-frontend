@@ -8,7 +8,7 @@ import YieldCounter from './YieldCounter';
 import { useDashboardOverview } from '../featureService/useDashboardOverview';
 
 export default function DashboardPage() {
-  const { agents, hasDeposit, history, isLoading, portfolio, principal } =
+  const { agents, hasDeposit, history, isLoading, portfolio, principal, yieldBalance, advanceBalance, availableToSpend } =
     useDashboardOverview();
 
   if (isLoading) {
@@ -78,11 +78,12 @@ export default function DashboardPage() {
             className="text-3xl font-light text-foreground/90 tabular-nums"
             style={{ letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums' }}
           >
-            ${Number(portfolio?.availableToSpend || 0).toLocaleString('en-US', {
-              minimumFractionDigits: 2,
-            })}
+            ${availableToSpend.toLocaleString('en-US', { minimumFractionDigits: 2 })}
           </p>
-          <p className="mt-2 text-[11px] text-foreground/30">70% LTV + yield</p>
+          <div className="mt-2 flex gap-4 text-[11px] text-foreground/30">
+            <span>Yield <span className="text-foreground/50">${yieldBalance.toFixed(2)}</span></span>
+            <span>Advance <span className="text-foreground/50">${advanceBalance.toFixed(2)}</span></span>
+          </div>
         </div>
       </div>
 

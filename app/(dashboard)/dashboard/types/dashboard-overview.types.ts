@@ -1,6 +1,7 @@
 export interface PortfolioSummary {
   totalPrincipal?: string;
   totalYield?: string;
+  totalValue?: string;
   perSecondEarnRate?: string;
   availableToSpend?: string;
   liquidBalance?: string;
