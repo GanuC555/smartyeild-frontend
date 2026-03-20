@@ -26,9 +26,9 @@ export function useStrategyBreakdown() {
     isLoading: query.isLoading,
     blendedAPY: query.data?.blendedAPY,
     data: [
-      { name: 'Guardian (6.2% APY)', value: guardian, color: '#60A5FA' },
-      { name: 'Balancer (12.8% APY)', value: balancer, color: '#A78BFA' },
-      { name: 'Hunter (24.7% APY)', value: hunter, color: '#F59E0B' },
+      { name: 'Guardian ', value: guardian, color: '#60A5FA' },
+      { name: 'Balancer ', value: balancer, color: '#A78BFA' },
+      { name: 'Hunter ', value: hunter, color: '#F59E0B' },
     ],
   };
 }

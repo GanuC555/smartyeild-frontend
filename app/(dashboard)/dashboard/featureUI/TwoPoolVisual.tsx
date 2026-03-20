@@ -1,3 +1,6 @@
+import { useDashboardOverview } from '../featureService/useDashboardOverview';
+
+
 export default function TwoPoolVisual({
   liquidBalance,
   strategyPool,
@@ -7,8 +10,10 @@ export default function TwoPoolVisual({
   strategyPool: number;
   dailyEarnRate: number;
 }) {
-  const total = liquidBalance + strategyPool;
-  const liquidRatio = total > 0 ? (liquidBalance / total) * 100 : 50;
+
+  const { advanceBalance } = useDashboardOverview();
+  const total = advanceBalance + strategyPool;
+  const liquidRatio = total > 0 ? (advanceBalance / total) * 100 : 50;
   const strategyRatio = 100 - liquidRatio;
 
   const formatRate = (n: number) => {
@@ -40,7 +45,7 @@ export default function TwoPoolVisual({
             className="text-xl font-light text-foreground/80 tabular-nums"
             style={{ fontVariantNumeric: 'tabular-nums' }}
           >
-            ${liquidBalance.toFixed(2)}
+            ${advanceBalance.toFixed(2)}
           </p>
           <p className="mt-1 text-[10px] text-foreground/25">
             {liquidRatio.toFixed(0)}% · spend today
