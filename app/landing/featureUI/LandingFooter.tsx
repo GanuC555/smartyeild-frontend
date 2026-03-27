@@ -7,7 +7,7 @@ import { FlickeringGrid } from '@/components/ui/flickering-grid';
 const footerLinks = {
   Product: ['Vault', 'Strategies', 'SpendBuffer', 'Card'],
   Protocol: ['OneDex', 'OnePredict', 'OneChain', 'Docs'],
-  Company: ['About', 'Blog', 'Careers', 'Contact'],
+  Company: ['About',  'Contact'],
 };
 
 const socialLinks = ['Twitter', 'Discord', 'GitHub'];
@@ -65,7 +65,7 @@ export default function LandingFooter() {
                 {links.map((link) => (
                   <li key={link}>
                     <a
-                      href="#"
+                      href={link === 'Docs' ? '/docs' : '#'}
                       className="text-sm text-white/50 transition-colors hover:text-white/90"
                     >
                       {link}
@@ -98,7 +98,7 @@ export default function LandingFooter() {
         </div>
 
         {/* Massive brand watermark */}
-        <div className="pointer-events-none relative h-[10rem] select-none overflow-hidden md:h-[12rem]">
+        <div className="pointer-events-none relative h-full select-none overflow-hidden md:h-[19rem]">
           <div className="absolute inset-0">
             <FlickeringGrid
               text="OneYield&Spend"

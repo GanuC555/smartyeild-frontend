@@ -2,7 +2,7 @@
 
 import ConnectWalletButton from './ConnectWalletButton';
 import { motion } from 'framer-motion';
-import { Wallet } from 'lucide-react';
+import Image from 'next/image';
 
 export default function LandingHeroSection() {
   return (
@@ -16,7 +16,7 @@ export default function LandingHeroSection() {
         transition={{ duration: 0.5, type: 'spring' }}
         className="backdrop-blur-lg border border-foreground/10 mb-8 flex h-16 w-16 items-center justify-center rounded-2xl"
       >
-        <Wallet className="h-8 w-8 text-foreground/80" strokeWidth="1.5" />
+           <Image src="/LogoOYS.png" alt="OneYield Logo" width={32} height={16} className="h-13 w-15" />
       </motion.div>
 
       

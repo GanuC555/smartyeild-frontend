@@ -1,6 +1,5 @@
 'use client';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { useWallet } from '@/lib/wallet/wallet-context';
 import { authApi } from '@/lib/api/client';
@@ -14,7 +13,6 @@ interface Props {
 export function ConnectButton({ className, label = 'Connect Wallet' }: Props) {
   const [loading, setLoading] = useState(false);
   const { setAuth } = useStore();
-  const router = useRouter();
   const wallet = useWallet();
 
   const handle = async () => {
@@ -30,7 +28,6 @@ export function ConnectButton({ className, label = 'Connect Wallet' }: Props) {
       localStorage.setItem('refreshToken', refreshToken);
       setAuth(accessToken, user, address);
       toast.success('Wallet connected!');
-      router.push('/dashboard');
     } catch (err: any) {
       toast.error(err.message || 'Connection failed — is the backend running?');
     } finally {

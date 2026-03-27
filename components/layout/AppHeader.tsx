@@ -1,14 +1,15 @@
 'use client';
 
-import { Menu, Wallet, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { ConnectButton } from '@onelabs/dapp-kit';
+import Image from 'next/image';
 import { useState } from 'react';
 import { useWallet } from '@/lib/wallet/wallet-context';
 import { useStore } from '@/lib/store';
 
 const NAV_ITEMS = [
+  { href: '/', label: 'Landing' },
   { href: '/dashboard', label: 'Dashboard' },
   { href: '/vault', label: 'Vault' },
   { href: '/strategies', label: 'Lanes' },
@@ -20,6 +21,12 @@ const NAV_ITEMS = [
 
 function truncateAddress(address: string) {
   return address ? `${address.slice(0, 6)}…${address.slice(-4)}` : '';
+}
+
+function isNavItemActive(pathname: string | null, href: string) {
+  if (!pathname) return false;
+  if (href === '/') return pathname === '/';
+  return pathname.startsWith(href);
 }
 
 export default function AppHeader() {
@@ -41,7 +48,7 @@ export default function AppHeader() {
         <div className="flex items-center justify-between gap-4">
           <Link href="/dashboard" className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-foreground/10 bg-foreground/10 backdrop-blur-sm">
-              <Wallet className="h-4 w-4 text-foreground/90" />
+           <Image src="/LogoOYS.png" alt="OneYield Logo" width={32} height={16} className="h-5 w-6" />
             </div>
             <span className="forum-regular text-lg font-semibold  text-foreground/90">
               OneYield
@@ -55,7 +62,7 @@ export default function AppHeader() {
                   key={item.href}
                   href={item.href}
                   className={`rounded-full px-4 py-2 text-sm transition-colors ${
-                    pathname?.startsWith(item.href)
+                    isNavItemActive(pathname, item.href)
                       ? 'bg-foreground/10 text-foreground/95'
                       : 'text-foreground/60 hover:text-foreground/90'
                   }`}
@@ -99,7 +106,7 @@ export default function AppHeader() {
                   href={item.href}
                   onClick={() => setMobileOpen(false)}
                   className={`rounded-xl px-4 py-3 text-sm transition-colors ${
-                    pathname?.startsWith(item.href)
+                    isNavItemActive(pathname, item.href)
                       ? 'bg-foreground/10 text-foreground/95'
                       : 'text-foreground/65 hover:bg-foreground/5 hover:text-foreground/90'
                   }`}

@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { useWallet } from '@/lib/wallet/wallet-context';
 import { authApi } from '@/lib/api/client';
@@ -9,7 +8,6 @@ import { useStore } from '@/lib/store';
 
 export function useWalletConnect() {
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
   const wallet = useWallet();
   const { setAuth } = useStore();
 
@@ -61,8 +59,7 @@ export function useWalletConnect() {
       localStorage.setItem('refreshToken', refreshToken);
       setAuth(accessToken, user, address);
       toast.success('Wallet connected');
-      console.info('[useWalletConnect]', 'redirect-dashboard', { attemptId });
-      router.push('/dashboard');
+      console.info('[useWalletConnect]', 'auth-success-no-redirect', { attemptId });
     } catch (error: unknown) {
       console.error('[useWalletConnect]', 'sign-in-error', {
         attemptId,

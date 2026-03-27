@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { vaultApi } from '@/lib/api/client';
 import { useOneChainTx } from '@/lib/onechain/useOneChainTx';
-import { useWallet } from '@/lib/wallet/wallet-context';
 import {
   DEFAULT_VAULT_ID,
   QUICK_DEPOSIT_AMOUNTS,
@@ -20,8 +19,7 @@ export function useVaultDeposit() {
   const [amount, setAmount] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const wallet = useWallet();
-  const { deposit: onChainDeposit, hasVaultPosition } = useOneChainTx();
+  const { deposit: onChainDeposit } = useOneChainTx();
 
   const vaultQuery = useQuery<VaultSummary>({
     queryKey: ['vault'],
@@ -50,17 +48,6 @@ export function useVaultDeposit() {
 
     setLoading(true);
     try {
-      // Guard: contract aborts if user already has an open position (table::add EFieldAlreadyExists)
-      const address = wallet.getAddress();
-      if (address) {
-        const alreadyDeposited = await hasVaultPosition(address);
-        if (alreadyDeposited) {
-          toast.error('You already have an active position. Withdraw first before depositing again.');
-          setLoading(false);
-          return;
-        }
-      }
-
       const result = await onChainDeposit({
         amountUsd: BigInt(Math.round(numAmount * 1_000_000)), // MOCK_USD has 6 decimals (like USDC)
         maturityDays: 30,

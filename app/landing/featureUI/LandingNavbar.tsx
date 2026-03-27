@@ -3,15 +3,20 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, Wallet, X } from 'lucide-react';
 import { useState } from 'react';
+import Image from 'next/image';
+import { useWallet } from '@/lib/wallet/wallet-context';
+import { useStore } from '@/lib/store';
 
 const navLinks = [
   { label: 'About', href: '/#about' },
-  { label: 'Docs', href: '/#docs' },
-  { label: 'Workflow', href: '/workflow' },
+  { label: 'Docs', href: '/docs' },
 ];
 
 export default function LandingNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const wallet = useWallet();
+  const isAuthenticated = useStore((state) => state.isAuthenticated);
+  const canShowDashboardButton = wallet.isConnected() && isAuthenticated;
 
   return (
     <motion.header
@@ -21,12 +26,10 @@ export default function LandingNavbar() {
       className="fixed left-0 right-0 top-0 z-50 px-4 py-4 md:px-8"
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between">
-        <a href="#" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-foreground/10  backdrop-blur-sm">
-            <Wallet className="h-4 w-4 text-foreground/90" />
-          </div>
+        <a href="/" className="flex items-center gap-2">
+           <Image src="/LogoOYS.png" alt="OneYield Logo" width={32} height={16} className="h-5 w-6" />
           <span className="forum-regular text-lg font-semibold  text-foreground/90">
-            OneYield
+            OneYeild
           </span>
         </a>
 
@@ -44,13 +47,15 @@ export default function LandingNavbar() {
           </div>
         </nav>
 
-        <a
-          href="/dashboard"
-          className="bg-white/10 hidden items-center gap-2 rounded-full border border-white/20 backdrop-blur-xl px-5 py-2.5 text-sm font-medium transition-colors hover:bg-foreground/5 md:flex"
-        >
-          <Wallet className="h-3.5 w-3.5 text-white/70 font-bold" />
-          <span className="text-white/90 ">Launch App</span>
-        </a>
+        {canShowDashboardButton ? (
+          <a
+            href="/dashboard"
+            className="bg-white/10 hidden items-center gap-2 rounded-full border border-white/20 backdrop-blur-xl px-5 py-2.5 text-sm font-medium transition-colors hover:bg-foreground/5 md:flex"
+          >
+            <Wallet className="h-3.5 w-3.5 text-white/70 font-bold" />
+            <span className="text-white/90 ">Go to Dashboard</span>
+          </a>
+        ) : null}
 
         <button
           onClick={() => setMobileOpen((value) => !value)}
@@ -83,13 +88,15 @@ export default function LandingNavbar() {
                   {link.label}
                 </a>
               ))}
-              <a
-                href="/dashboard"
-                className="  mt-2 flex items-center justify-center gap-2 rounded-full  px-5 py-3 text-sm font-medium text-foreground/90 "
-              >
-                <Wallet className="h-3.5 w-3.5" />
-                Launch App
-              </a>
+              {canShowDashboardButton ? (
+                <a
+                  href="/dashboard"
+                  className="  mt-2 flex items-center justify-center gap-2 rounded-full  px-5 py-3 text-sm font-medium text-foreground/90 "
+                >
+                  <Wallet className="h-3.5 w-3.5" />
+                  Go to Dashboard
+                </a>
+              ) : null}
             </nav>
           </motion.div>
         ) : null}
