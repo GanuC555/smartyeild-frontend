@@ -29,11 +29,12 @@
 9. [Repository Structure](#repository-structure)
 10. [Tech Stack](#tech-stack)
 11. [Environment Configuration](#environment-configuration)
-12. [Runbook: Local Development](#runbook-local-development)
-13. [Production Readiness Checklist](#production-readiness-checklist)
-14. [Future-Secured Path (TEE + Attestation)](#future-secured-path-tee--attestation)
-15. [OneYield × OneChain Growth Path](#oneyield--onechain-growth-path)
-16. [Production Operations Model](#production-operations-model)
+12. [OneChain Deployment Snapshot + Explorer Proof](#onechain-deployment-snapshot--explorer-proof)
+13. [Runbook: Local Development](#runbook-local-development)
+14. [Production Readiness Checklist](#production-readiness-checklist)
+15. [Future-Secured Path (TEE + Attestation)](#future-secured-path-tee--attestation)
+16. [OneYield × OneChain Growth Path](#oneyield--onechain-growth-path)
+17. [Production Operations Model](#production-operations-model)
 
 ---
 
@@ -273,6 +274,41 @@ Notes:
 
 - If `NEXT_PUBLIC_API_URL` is omitted, fallback is used from `lib/api/client.ts`.
 - Package/object IDs must match the deployed OneChain environment.
+
+---
+
+## OneChain Deployment Snapshot + Explorer Proof
+
+> “Every important claim should map to an object ID or transaction digest.”
+
+Deployment source of truth: `../onechain/deployed.json`
+
+### Testnet deployment snapshot (March 15, 2026)
+
+| Field | Value |
+|---|---|
+| Network | `testnet` |
+| RPC URL | `https://rpc-testnet.onelabs.cc` |
+| Package ID | `0xfa477ea107d411f41a2b2e0312c5edb891c69dc2a414845cd38790479dbe860c` |
+| Vault Object | `0x841d959881a94260c07cbd378b790fad5417b5250f455d808ce8ce0f4fdb5a40` |
+| Spend Buffer Object | `0x5719e64ccb1f0956bc6f9193fe9bdc9a44ddbc5eb265ce3dc1871695294581bf` |
+| Lane Router Object | `0x7356be323c2ee4b8bda59594aaed669add371eba164c3cc18a878d56f8555e5f` |
+| OneDex Object | `0x1786615c5f3561b44875a2b4e41b64ca36a7d7a33326638cd95cef900f0b459f` |
+| Prediction Market Object | `0x5bc1e9815c957c871749a8f44296eaa9398954932dc63d11014621dfdc887fe0` |
+
+### Verified transaction proofs (clickable)
+
+> Explorer base (as requested): [OneScan Testnet Home](https://onescan.cc/testnet/home)
+
+| Operation | Digest | OneScan Link |
+|---|---|---|
+| Faucet mint 100 USD | `EvaVErpsEQVpT6p6VHMGZE9yAC68jTkXqapRVZ1pSue3` | [Open tx](https://onescan.cc/testnet/txblock/EvaVErpsEQVpT6p6VHMGZE9yAC68jTkXqapRVZ1pSue3) |
+| Add DEX liquidity (50 USD) | `HgngwysQ19d7yogcKKLb3okwWyw3cRLAKk1SsqSJiDzx` | [Open tx](https://onescan.cc/testnet/txblock/HgngwysQ19d7yogcKKLb3okwWyw3cRLAKk1SsqSJiDzx) |
+| Simulate trading fees (0.22 USD) | `2Gau915sX5P19H26QDRdBEt1HdgwoBV2ZhMJWqdyWqrk` | [Open tx](https://onescan.cc/testnet/txblock/2Gau915sX5P19H26QDRdBEt1HdgwoBV2ZhMJWqdyWqrk) |
+| Harvest DEX yield | `5dm9AAbB8p8PgKL2jqwKWPirH7c4vnsHZWdGkZJXwBvs` | [Open tx](https://onescan.cc/testnet/txblock/5dm9AAbB8p8PgKL2jqwKWPirH7c4vnsHZWdGkZJXwBvs) |
+| Credit advance (7 USD) | `3vmMzsFMxTgiJy1UbJDM33c5HLmLHRhyrXC9c81fuRj4` | [Open tx](https://onescan.cc/testnet/txblock/3vmMzsFMxTgiJy1UbJDM33c5HLmLHRhyrXC9c81fuRj4) |
+
+If OneScan route behavior changes, open [OneScan Testnet Home](https://onescan.cc/testnet/home) and paste the digest in search.
 
 ---
 
