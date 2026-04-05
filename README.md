@@ -1,4 +1,4 @@
-# OneYield Frontend
+# OneYield 
 
 <p align="center">
 	<img src="./public/LogoOYS.png" alt="OneYield Logo" width="140" />
