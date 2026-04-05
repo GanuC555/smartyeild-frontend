@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  Frontend control plane for OneYield — a OneChain-native yield utility protocol that turns passive capital into adaptive, policy-guarded financial flows.
+   OneYield — a OneChain-native yield utility protocol that turns passive capital into adaptive, policy-guarded financial flows.
 </p>
 
 > “In modern finance UX, trust is not a claim — it is a verifiable execution trail.”
