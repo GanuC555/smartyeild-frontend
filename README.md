@@ -1,12 +1,18 @@
 # OneYield Frontend
 
 <p align="center">
+	<img src="./public/LogoOYS.png" alt="OneYield Logo" width="140" />
+</p>
+
+<p align="center">
   <strong>Deposit once. Route intelligently. Spend responsibly. Compound continuously.</strong>
 </p>
 
 <p align="center">
   Frontend control plane for OneYield — a OneChain-native yield utility protocol that turns passive capital into adaptive, policy-guarded financial flows.
 </p>
+
+> “In modern finance UX, trust is not a claim — it is a verifiable execution trail.”
 
 ---
 
@@ -27,6 +33,7 @@
 13. [Production Readiness Checklist](#production-readiness-checklist)
 14. [Future-Secured Path (TEE + Attestation)](#future-secured-path-tee--attestation)
 15. [OneYield × OneChain Growth Path](#oneyield--onechain-growth-path)
+16. [Production Operations Model](#production-operations-model)
 
 ---
 
@@ -71,6 +78,8 @@ A modern yield system must be:
 - **adaptive** (dynamic routing),
 - **trustworthy** (clear guardrails and verifiability),
 - **usable** (consumer-grade transaction UX).
+
+> “Static allocation is easy to explain. Adaptive allocation is what survives real markets.”
 
 ---
 
@@ -156,6 +165,8 @@ The frontend renders and explains a seven-stage decision loop used for adaptive 
 
 This pipeline transforms OneYield from static vault allocation to adaptive capital orchestration with explicit safety boundaries.
 
+> “The agent does not replace risk policy — it operates inside it.”
+
 ---
 
 ## Security & Trust Model
@@ -178,6 +189,8 @@ This pipeline transforms OneYield from static vault allocation to adaptive capit
 ### Operational trust posture
 
 Security is implemented as layered control, not a single mechanism.
+
+> “Security maturity = policy constraints + execution isolation + auditability.”
 
 ---
 
@@ -301,6 +314,48 @@ Default URL: `http://localhost:3000`
 
 ---
 
+## Production Operations Model
+
+This frontend is designed to operate as part of a production-grade distributed system, not a standalone website.
+
+### 1) Reliability targets (recommended)
+
+- **Availability SLO:** 99.9% monthly for user-facing routes
+- **API interaction success SLO:** ≥ 99.5% (excluding upstream chain outages)
+- **P95 page-interactive latency target:** < 2.5s on stable networks
+- **P95 tx-initiation UX latency target:** < 1.2s (wallet popup readiness)
+
+### 2) Deployment posture
+
+- Immutable build artifacts per release
+- Environment-specific contract IDs and RPC endpoints
+- Release gates that block deploys on missing chain config
+- Blue/green or canary rollouts for high-risk changes
+
+### 3) Observability stack expectations
+
+- Structured frontend error capture (route, wallet state, chain context)
+- Correlation IDs between frontend API calls and backend job execution
+- Dashboard panels for:
+	- auth refresh failures,
+	- tx submission failures,
+	- spend settlement UI/API mismatch,
+	- lane/agent data staleness.
+
+### 4) Incident handling posture
+
+- User-safe degraded modes for temporary chain/API instability
+- Explicit status messaging when state may be stale
+- Fast rollback path with previous known-good env + build pair
+
+### 5) Change management
+
+- Treat contract/config updates as production migrations
+- Version UI behavior against backend API schema changes
+- Require smoke verification on deposit, spend, and withdraw before promotion
+
+---
+
 ## Future-Secured Path (TEE + Attestation)
 
 To protect agentic decision integrity against prompt injection and context tampering, OneYield roadmap includes trusted enclave execution.
@@ -330,6 +385,8 @@ OneYield grows with OneChain through compounding utility loops:
 ### Strategic north star
 
 Build the most understandable, secure, and adaptive frontend for programmable yield utility in the OneChain ecosystem.
+
+> “As OneChain liquidity deepens, OneYield becomes the intelligence layer that routes capital with discipline, not hype.”
 
 ---
 
