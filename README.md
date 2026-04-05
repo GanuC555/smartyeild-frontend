@@ -1,4 +1,4 @@
-# OneYield 
+# OneYield Protocol
 
 <p align="center">
 	<img src="./public/LogoOYS.png" alt="OneYield Logo" width="140" />
@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-   OneYield — a OneChain-native yield utility protocol that turns passive capital into adaptive, policy-guarded financial flows.
+	OneYield — a OneChain-native yield utility protocol that turns passive capital into adaptive, policy-guarded financial flows across frontend, backend, AI workers, and on-chain settlement.
 </p>
 
 > “In modern finance UX, trust is not a claim — it is a verifiable execution trail.”
@@ -19,22 +19,25 @@
 ## Table of Contents
 
 1. [Executive Summary](#executive-summary)
-2. [Problem Statement (Why OneYield exists)](#problem-statement-why-oneyield-exists)
-3. [Solution Thesis](#solution-thesis)
-4. [Product Architecture (In Depth)](#product-architecture-in-depth)
-5. [Agentic Intelligence Pipeline](#agentic-intelligence-pipeline)
-6. [Security & Trust Model](#security--trust-model)
-7. [Frontend Capabilities](#frontend-capabilities)
-8. [API Surface](#api-surface)
-9. [Repository Structure](#repository-structure)
-10. [Tech Stack](#tech-stack)
-11. [Environment Configuration](#environment-configuration)
-12. [OneChain Deployment Snapshot + Explorer Proof](#onechain-deployment-snapshot--explorer-proof)
-13. [Runbook: Local Development](#runbook-local-development)
-14. [Production Readiness Checklist](#production-readiness-checklist)
-15. [Future-Secured Path (TEE + Attestation)](#future-secured-path-tee--attestation)
-16. [OneYield × OneChain Growth Path](#oneyield--onechain-growth-path)
-17. [Production Operations Model](#production-operations-model)
+2. [Protocol Scope (Frontend + Backend + On-chain)](#protocol-scope-frontend--backend--on-chain)
+3. [Problem Statement (Why OneYield exists)](#problem-statement-why-oneyield-exists)
+4. [Solution Thesis](#solution-thesis)
+5. [Product Architecture (In Depth)](#product-architecture-in-depth)
+6. [Backend Control Plane (NestJS)](#backend-control-plane-nestjs)
+7. [Agentic Intelligence Pipeline](#agentic-intelligence-pipeline)
+8. [End-to-End Settlement Lifecycle](#end-to-end-settlement-lifecycle)
+9. [Security & Trust Model](#security--trust-model)
+10. [Protocol Capabilities](#protocol-capabilities)
+11. [API Surface](#api-surface)
+12. [Repository Structure](#repository-structure)
+13. [Tech Stack](#tech-stack)
+14. [Environment Configuration](#environment-configuration)
+15. [OneChain Deployment Snapshot + Explorer Proof](#onechain-deployment-snapshot--explorer-proof)
+16. [Runbook: Local Development](#runbook-local-development)
+17. [Production Readiness Checklist](#production-readiness-checklist)
+18. [Future-Secured Path (TEE + Attestation)](#future-secured-path-tee--attestation)
+19. [OneYield × OneChain Growth Path](#oneyield--onechain-growth-path)
+20. [Production Operations Model](#production-operations-model)
 
 ---
 
@@ -42,15 +45,41 @@
 
 OneYield solves a structural DeFi contradiction: users want compounding exposure and real-life liquidity at the same time.
 
-This frontend provides the operational UX for that model:
+The protocol delivers this through a coordinated full-stack system:
 
-- wallet-native auth and transaction signing,
-- on-chain deposit/spend/withdraw interaction,
-- policy-aware strategy visibility,
-- agentic capital routing transparency,
-- Telegram Mini App-compatible distribution for scale.
+- **Frontend (Next.js):** user execution UX, wallet flows, portfolio and lane visibility
+- **Backend (NestJS):** policy engine, orchestration APIs, worker scheduling, auth/session control
+- **Agent workers:** periodic harvest/credit loops and policy-bound execution tasks
+- **On-chain modules (OneChain):** vault, spend buffer, lane router, token primitives, DEX/predict integrations
+- **Operational data plane:** observability, transaction traceability, and audit-friendly execution records
 
-In short, this app is not a dashboard. It is the user-facing execution layer for programmable yield utility.
+In short, this is not just an app. It is a production-oriented protocol stack for programmable yield utility.
+
+---
+
+## Protocol Scope (Frontend + Backend + On-chain)
+
+OneYield is presented as a complete protocol, not a UI-only project.
+
+### 1) User interaction layer (Frontend)
+- Wallet connection and transaction signing (OneWallet)
+- Deposit, spend, and withdraw flows
+- Strategy and lane intelligence views
+
+### 2) Decision and policy layer (Backend + Agent services)
+- API contracts for portfolio, vault, lane, spend, and agent status
+- Policy validation before action execution
+- Worker-based recurring loops for yield harvest and yield crediting
+
+### 3) Settlement layer (OneChain)
+- Principal and yield accounting in protocol objects
+- Spend rails for yield-first settlements
+- Router-managed deployment/harvest actions
+
+### 4) Production layer (Ops + security)
+- Failure-aware retries and worker isolation
+- Correlated traceability between API events and tx digests
+- Progressive hardening path to TEE-attested decisions
 
 ---
 
@@ -127,6 +156,34 @@ flowchart TD
 	 L4 --> L2
 ```
 
+---
+
+## Backend Control Plane (NestJS)
+
+The backend is the protocol control plane that turns strategy intent into safe executable actions.
+
+### Responsibilities
+
+- Authentication and session management (wallet + mini app compatibility)
+- Portfolio and spend APIs consumed by the frontend
+- Policy checks before execution
+- Worker orchestration for periodic yield jobs
+- Persistence of transaction references and execution outcomes
+
+### Core execution model
+
+1. Receive user or scheduler intent
+2. Validate policy and current state
+3. Build approved action payload
+4. Execute via chain adapter / signer path
+5. Store result + digest + status for UI and audit retrieval
+
+### Worker-driven protocol loops
+
+- `YieldHarvestService`: harvests from connected venues into protocol reserves
+- `YieldCreditService`: computes user deltas and credits spend balances
+- Watch/process flows: track async completion and recover from transient failures
+
 ### Design principles
 
 - **Financial clarity over UI cleverness**
@@ -170,6 +227,31 @@ This pipeline transforms OneYield from static vault allocation to adaptive capit
 
 ---
 
+## End-to-End Settlement Lifecycle
+
+```mermaid
+sequenceDiagram
+	participant U as User
+	participant F as Frontend (Next.js)
+	participant B as Backend (NestJS)
+	participant W as Worker/Agent
+	participant C as OneChain
+
+	U->>F: Initiate deposit/spend/withdraw
+	F->>B: Request policy + execution context
+	B-->>F: Approved action parameters
+	F->>C: User signs and submits tx
+	C-->>F: Tx digest
+	F->>B: Persist digest + action metadata
+	B->>W: Schedule/trigger follow-up tasks
+	W->>C: Harvest/Credit/Rebalance actions
+	C-->>W: Execution digest + state updates
+	W->>B: Persist outcomes for analytics/audit
+	B-->>F: Updated portfolio + status
+```
+
+---
+
 ## Security & Trust Model
 
 ### Current controls
@@ -195,7 +277,7 @@ Security is implemented as layered control, not a single mechanism.
 
 ---
 
-## Frontend Capabilities
+## Protocol Capabilities
 
 - Wallet connect and signing via `@onelabs/dapp-kit`
 - On-chain transaction UX for:
@@ -207,6 +289,8 @@ Security is implemented as layered control, not a single mechanism.
 - Spend rails and transaction history views
 - Faucet onboarding utilities for testnet users
 - Telegram Mini App auth compatibility
+- Backend-driven periodic harvest/credit operations
+- Traceable tx digest lifecycle across UI → API → worker → chain
 
 ---
 
@@ -231,28 +315,29 @@ Centralized clients live in `lib/api/client.ts`:
 ## Repository Structure
 
 ```text
-frontend/
-├── app/                   # Route groups: dashboard, docs, workflow, landing
-├── components/            # Shared and feature components
-├── lib/
-│   ├── api/               # Typed API clients
-│   ├── onechain/          # Chain config + tx hooks
-│   ├── wallet/            # Wallet adapter/context
-│   └── providers.tsx      # Query + chain + wallet providers
-├── public/                # Static assets
-├── docs/                  # Product and engineering docs
-└── README.md
+SmartYeild/
+├── frontend/              # Next.js protocol interface (this repo)
+│   ├── app/               # Route groups: dashboard, docs, workflow, landing
+│   ├── components/        # Shared and feature components
+│   ├── lib/               # API clients, chain config, wallet providers
+│   └── public/            # Branding and static assets
+├── Backend/               # NestJS control plane + worker orchestration
+│   ├── src/modules/       # Auth, agent, vault, spend, chain modules
+│   └── scripts/           # Operational/manual chain scripts
+├── onechain/              # Deployment artifacts and object/package IDs
+└── contracts/             # Move/Solidity contract workspaces and artifacts
 ```
 
 ---
 
 ## Tech Stack
 
-- **Framework**: Next.js 16 (App Router)
-- **UI**: React 19, TailwindCSS 4, Radix, Motion
-- **State/Data**: TanStack Query, Zustand
-- **Chain/Wallet**: `@onelabs/dapp-kit`, `@onelabs/sui`
-- **Notifications**: Sonner
+- **Frontend**: Next.js 16 (App Router), React 19, TailwindCSS 4, Radix, Motion
+- **Backend**: NestJS, TypeScript, scheduled workers/processors
+- **State/Data**: TanStack Query, Zustand (frontend), service persistence (backend)
+- **Chain/Wallet**: `@onelabs/dapp-kit`, `@onelabs/sui`, OneChain RPC
+- **Protocol modules**: `vault`, `spend_buffer`, `lane_router`, `mock_onedex`, `mock_onepredict`
+- **Notifications/UX**: Sonner
 
 ---
 
@@ -274,6 +359,7 @@ Notes:
 
 - If `NEXT_PUBLIC_API_URL` is omitted, fallback is used from `lib/api/client.ts`.
 - Package/object IDs must match the deployed OneChain environment.
+- Backend control plane must use the same package/object IDs to keep settlement paths consistent.
 
 ---
 
@@ -302,11 +388,11 @@ Deployment source of truth: `../onechain/deployed.json`
 
 | Operation | Digest | OneScan Link |
 |---|---|---|
-| Faucet mint 100 USD | `EvaVErpsEQVpT6p6VHMGZE9yAC68jTkXqapRVZ1pSue3` | [Open tx](https://onescan.cc/testnet/txblock/EvaVErpsEQVpT6p6VHMGZE9yAC68jTkXqapRVZ1pSue3) |
-| Add DEX liquidity (50 USD) | `HgngwysQ19d7yogcKKLb3okwWyw3cRLAKk1SsqSJiDzx` | [Open tx](https://onescan.cc/testnet/txblock/HgngwysQ19d7yogcKKLb3okwWyw3cRLAKk1SsqSJiDzx) |
-| Simulate trading fees (0.22 USD) | `2Gau915sX5P19H26QDRdBEt1HdgwoBV2ZhMJWqdyWqrk` | [Open tx](https://onescan.cc/testnet/txblock/2Gau915sX5P19H26QDRdBEt1HdgwoBV2ZhMJWqdyWqrk) |
-| Harvest DEX yield | `5dm9AAbB8p8PgKL2jqwKWPirH7c4vnsHZWdGkZJXwBvs` | [Open tx](https://onescan.cc/testnet/txblock/5dm9AAbB8p8PgKL2jqwKWPirH7c4vnsHZWdGkZJXwBvs) |
-| Credit advance (7 USD) | `3vmMzsFMxTgiJy1UbJDM33c5HLmLHRhyrXC9c81fuRj4` | [Open tx](https://onescan.cc/testnet/txblock/3vmMzsFMxTgiJy1UbJDM33c5HLmLHRhyrXC9c81fuRj4) |
+| Faucet mint 100 USD | `EvaVErpsEQVpT6p6VHMGZE9yAC68jTkXqapRVZ1pSue3` | [Open tx](https://onescan.cc/testnet/transactionBlocksDetail?digest=EvaVErpsEQVpT6p6VHMGZE9yAC68jTkXqapRVZ1pSue3) |
+| Add DEX liquidity (50 USD) | `HgngwysQ19d7yogcKKLb3okwWyw3cRLAKk1SsqSJiDzx` | [Open tx](https://onescan.cc/testnet/transactionBlocksDetail?digest=HgngwysQ19d7yogcKKLb3okwWyw3cRLAKk1SsqSJiDzx) |
+| Simulate trading fees (0.22 USD) | `2Gau915sX5P19H26QDRdBEt1HdgwoBV2ZhMJWqdyWqrk` | [Open tx](https://onescan.cc/testnet/transactionBlocksDetail?digest=2Gau915sX5P19H26QDRdBEt1HdgwoBV2ZhMJWqdyWqrk) |
+| Harvest DEX yield | `5dm9AAbB8p8PgKL2jqwKWPirH7c4vnsHZWdGkZJXwBvs` | [Open tx](https://onescan.cc/testnet/transactionBlocksDetail?digest=5dm9AAbB8p8PgKL2jqwKWPirH7c4vnsHZWdGkZJXwBvs) |
+| Credit advance (7 USD) | `3vmMzsFMxTgiJy1UbJDM33c5HLmLHRhyrXC9c81fuRj4` | [Open tx](https://onescan.cc/testnet/transactionBlocksDetail?digest=3vmMzsFMxTgiJy1UbJDM33c5HLmLHRhyrXC9c81fuRj4) |
 
 If OneScan route behavior changes, open [OneScan Testnet Home](https://onescan.cc/testnet/home) and paste the digest in search.
 
@@ -327,13 +413,23 @@ cp .env.local.example .env.local
 # fill values
 ```
 
-### 3) Start development server
+### 3) Start frontend
 
 ```bash
 pnpm dev
 ```
 
 Default URL: `http://localhost:3000`
+
+### 4) Start backend (workspace root)
+
+```bash
+cd ../Backend
+pnpm install
+pnpm start:dev
+```
+
+Backend default URL is typically `http://localhost:3001` (validate against local backend config).
 
 ---
 
