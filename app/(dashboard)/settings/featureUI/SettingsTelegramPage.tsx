@@ -43,7 +43,7 @@ export default function SettingsTelegramPage() {
           </p>
         </div>
 
-        {telegram?.linked ? (
+        {telegram?.linked && (
           <div className="space-y-4">
             <p className="text-sm text-foreground/60">
               Linked to{' '}
@@ -59,24 +59,7 @@ export default function SettingsTelegramPage() {
               {loading ? 'Updating…' : 'Unlink Telegram'}
             </button>
           </div>
-        ) : (
-          <div className="space-y-4">
-            <input
-              value={platformIdInput}
-              onChange={(e) => setPlatformIdInput(e.target.value)}
-              placeholder="Enter Platform ID from Telegram"
-              className="w-full rounded-xl border border-foreground/10 bg-foreground/5 px-4 py-3 text-sm text-foreground/85 outline-none transition-colors focus:border-foreground/25 placeholder:text-foreground/25"
-            />
-            {/* Blue CTA — the only accent on this page */}
-            <button
-              onClick={linkTelegram}
-              disabled={loading}
-              className="premium-btn-primary px-6 py-3"
-            >
-              {loading ? 'Linking…' : 'Link Telegram'}
-            </button>
-          </div>
-        )}
+        ) }
       </div>
 
     </div>

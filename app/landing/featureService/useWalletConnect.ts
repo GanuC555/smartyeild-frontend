@@ -58,7 +58,7 @@ export function useWalletConnect() {
 
       localStorage.setItem('refreshToken', refreshToken);
       setAuth(accessToken, user, address);
-      toast.success('Wallet connected');
+      toast.success('Wallet connected', { duration: 2000 });
       console.info('[useWalletConnect]', 'auth-success-no-redirect', { attemptId });
     } catch (error: unknown) {
       console.error('[useWalletConnect]', 'sign-in-error', {
